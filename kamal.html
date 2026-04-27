@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kamal Medical Stores - AI Pharmacy Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#060b08;--bg2:#0b1410;--sidebar:#08100c;--card:#111d16;--card-h:#162a1f;--brd:#183022;--brd-l:#245a3a;--fg:#e2f3e8;--fg-m:#6fa885;--fg-d:#3d6b50;--acc:#00e676;--acc-d:#00c853;--acc-g:rgba(0,230,118,.1);--red:#ff5252;--red-g:rgba(255,82,82,.1);--warn:#ffab40;--warn-g:rgba(255,171,64,.1);--info:#40c4ff;--info-g:rgba(64,196,255,.1);--purple:#ce93d8;--purple-g:rgba(206,147,216,.1);--radius:10px;--shadow:0 4px 24px rgba(0,0,0,.4)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--fg);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 10%,rgba(0,230,118,.03) 0%,transparent 50%),radial-gradient(ellipse at 85% 90%,rgba(0,200,83,.02) 0%,transparent 50%);pointer-events:none;z-index:0}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--brd-l);border-radius:3px}
+input,select,textarea,button{font-family:'Poppins',sans-serif}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:1rem}
+.login-box{background:var(--bg2);border:1px solid var(--brd);border-radius:20px;padding:2.8rem 2.5rem;width:100%;max-width:410px;box-shadow:0 24px 80px rgba(0,0,0,.6);position:relative;overflow:hidden}
+.login-box::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent 0%,rgba(0,230,118,.03) 25%,transparent 50%);animation:loginGlow 8s linear infinite;pointer-events:none}
+@keyframes loginGlow{to{transform:rotate(360deg)}}
+.login-logo{text-align:center;margin-bottom:2rem;position:relative;z-index:1}
+.login-logo .ico{width:64px;height:64px;background:linear-gradient(135deg,var(--acc),#00a152);border-radius:16px;display:inline-flex;align-items:center;justify-content:center;font-size:28px;color:#060b08;box-shadow:0 8px 32px rgba(0,230,118,.3);margin-bottom:.8rem;transition:transform .3s}
+.login-logo h1{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:800;letter-spacing:-.5px}
+.login-logo p{font-size:.65rem;color:var(--fg-d);letter-spacing:2.5px;text-transform:uppercase;margin-top:4px}
+.login-logo .ai-badge{display:inline-flex;align-items:center;gap:5px;background:var(--acc-g);color:var(--acc);font-size:.6rem;padding:4px 12px;border-radius:20px;font-weight:600;margin-top:10px;border:1px solid rgba(0,230,118,.15)}
+.login-logo .ai-badge i{font-size:7px;animation:aiPulse 2s infinite}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.fg{margin-bottom:.9rem;position:relative;z-index:1}
+.fg label{display:block;font-size:.73rem;font-weight:500;color:var(--fg-m);margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:11px 14px;background:var(--card);border:1px solid var(--brd);border-radius:var(--radius);color:var(--fg);font-size:.84rem;outline:none;transition:all .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}
+.fg input::placeholder,.fg textarea::placeholder{color:var(--fg-d)}
+.fg .pw-toggle{position:absolute;right:12px;top:32px;background:none;border:none;color:var(--fg-d);cursor:pointer;font-size:14px;z-index:2;padding:4px;transition:color .15s}
+.fg .pw-toggle:hover{color:var(--fg-m)}
+.login-err{color:var(--red);font-size:.76rem;min-height:1.2rem;margin-bottom:.3rem;text-align:center;position:relative;z-index:1}
+.login-hint{text-align:center;font-size:.68rem;color:var(--fg-d);margin-top:1.2rem;padding-top:1rem;border-top:1px solid var(--brd);position:relative;z-index:1}
+.login-hint strong{color:var(--fg-m);font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:var(--radius);border:none;font-size:.8rem;font-weight:500;cursor:pointer;transition:all .2s;white-space:nowrap;text-decoration:none}
+.btn-p{background:linear-gradient(135deg,var(--acc),var(--acc-d));color:#060b08;box-shadow:0 3px 14px rgba(0,230,118,.2)}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 5px 22px rgba(0,230,118,.3)}
+.btn-s{background:var(--card);color:var(--fg);border:1px solid var(--brd)}
+.btn-s:hover{background:var(--card-h);border-color:var(--brd-l)}
+.btn-d{background:var(--red-g);color:var(--red);border:1px solid rgba(255,82,82,.18)}
+.btn-w{background:var(--warn-g);color:var(--warn);border:1px solid rgba(255,171,64,.18)}
+.btn-i{background:var(--info-g);color:var(--info);border:1px solid rgba(64,196,255,.18)}
+.btn-ai{background:linear-gradient(135deg,rgba(0,230,118,.12),rgba(64,196,255,.12));color:var(--acc);border:1px solid rgba(0,230,118,.2);position:relative;overflow:hidden}
+.btn-sm{padding:6px 11px;font-size:.74rem;border-radius:8px}
+.btn-icon{width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:8px}
+.btn-block{width:100%;justify-content:center;padding:12px}
+.app{display:flex;min-height:100vh;position:relative;z-index:1}
+.sidebar{width:240px;background:var(--sidebar);border-right:1px solid var(--brd);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;transition:transform .3s}
+.sb-logo{padding:1.1rem 1.2rem;border-bottom:1px solid var(--brd);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.sb-logo-ico{width:36px;height:36px;background:linear-gradient(135deg,var(--acc),#00a152);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#060b08;flex-shrink:0}
+.sb-logo-txt h2{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:800;line-height:1.1}
+.sb-logo-txt span{font-size:.58rem;color:var(--fg-d);letter-spacing:1.5px;text-transform:uppercase}
+.sb-nav{flex:1;overflow-y:auto;padding:.8rem .6rem}
+.sb-nav-label{font-size:.6rem;font-weight:600;color:var(--fg-d);text-transform:uppercase;letter-spacing:1.2px;padding:.5rem .7rem .3rem}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;font-size:.78rem;color:var(--fg-m);cursor:pointer;transition:all .15s;border:none;background:none;width:100%;text-align:left}
+.sb-item:hover{color:var(--fg);background:rgba(0,230,118,.05)}
+.sb-item.active{color:var(--acc);background:var(--acc-g);font-weight:600}
+.sb-item i{width:18px;text-align:center;font-size:14px}
+.sb-item .badge-r{margin-left:auto;background:var(--red);color:#fff;font-size:.6rem;padding:1px 6px;border-radius:10px;font-weight:600}
+.sb-footer{padding:.8rem 1rem;border-top:1px solid var(--brd);flex-shrink:0}
+.sb-user{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card);border-radius:8px;margin-bottom:6px}
+.sb-user .avatar{width:30px;height:30px;background:var(--acc-g);color:var(--acc);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+.sb-user .uinfo{flex:1;min-width:0}
+.sb-user .uname{font-size:.74rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-user .urole{font-size:.6rem;color:var(--fg-d)}
+.sb-logout{width:100%;padding:7px;border-radius:7px;border:1px solid var(--brd);background:none;color:var(--fg-d);font-size:.72rem;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.sb-logout:hover{color:var(--red);border-color:rgba(255,82,82,.3);background:var(--red-g)}
+.main-area{flex:1;margin-left:240px;display:flex;flex-direction:column;min-height:100vh}
+.topbar{height:56px;background:rgba(6,11,8,.85);backdrop-filter:blur(16px);border-bottom:1px solid var(--brd);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;position:sticky;top:0;z-index:40;flex-shrink:0}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-title{font-size:.92rem;font-weight:600}
+.tb-hamburger{display:none;width:36px;height:36px;border:1px solid var(--brd);background:var(--card);color:var(--fg-m);border-radius:8px;cursor:pointer;align-items:center;justify-content:center;font-size:16px}
+.tb-right{display:flex;align-items:center;gap:8px}
+.tb-clock{font-size:.74rem;color:var(--fg-d);font-variant-numeric:tabular-nums}
+.tb-kbd{font-size:.6rem;color:var(--fg-d);background:var(--card);border:1px solid var(--brd);padding:2px 7px;border-radius:4px;margin-left:4px}
+.tb-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--brd);background:var(--card);color:var(--fg-m);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .15s;position:relative}
+.tb-btn:hover{background:var(--card-h);color:var(--fg)}
+.tb-btn .notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:var(--red);border-radius:50%;border:1.5px solid var(--sidebar)}
+.tb-ai-dot{width:8px;height:8px;background:var(--acc);border-radius:50%;animation:aiPulse 2s infinite;margin-right:4px}
+.content{flex:1;padding:1.5rem;max-width:1400px;width:100%}
+.tab-content{display:none}.tab-content.active{display:block}
+.stats-row{display:grid;gap:12px;margin-bottom:1.3rem}
+.stats-4{grid-template-columns:repeat(4,1fr)}.stats-3{grid-template-columns:repeat(3,1fr)}
+.stat-card{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:1.1rem;position:relative;overflow:hidden;transition:all .25s}
+.stat-card:hover{border-color:var(--brd-l);transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat-card .glow{position:absolute;top:-15px;right:-15px;width:60px;height:60px;border-radius:50%;filter:blur(25px);opacity:.15;pointer-events:none}
+.stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;margin-bottom:8px}
+.si-g{background:var(--acc-g);color:var(--acc)}.si-r{background:var(--red-g);color:var(--red)}.si-o{background:var(--warn-g);color:var(--warn)}.si-b{background:var(--info-g);color:var(--info)}.si-p{background:var(--purple-g);color:var(--purple)}
+.glow-g{background:var(--acc)}.glow-r{background:var(--red)}.glow-o{background:var(--warn)}.glow-b{background:var(--info)}.glow-p{background:var(--purple)}
+.stat-val{font-size:1.5rem;font-weight:700;line-height:1;margin-bottom:2px}
+.stat-lbl{font-size:.7rem;color:var(--fg-m)}
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.search-box{flex:1;min-width:200px;position:relative}
+.search-box i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--fg-d);font-size:12px}
+.search-box input{width:100%;padding:9px 12px 9px 34px;background:var(--card);border:1px solid var(--brd);border-radius:var(--radius);color:var(--fg);font-size:.8rem;outline:none;transition:all .2s}
+.search-box input:focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-g)}
+.fsel{padding:9px 30px 9px 12px;background:var(--card);border:1px solid var(--brd);border-radius:var(--radius);color:var(--fg);font-size:.8rem;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%236fa885' d='M5 7L0 2h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.fsel option{background:var(--card)}
+.tbl-wrap{background:var(--card);border:1px solid var(--brd);border-radius:12px;overflow:hidden}
+.tbl-head{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.2rem;border-bottom:1px solid var(--brd)}
+.tbl-head h2{font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:7px}
+.cnt-badge{background:var(--acc-g);color:var(--acc);font-size:.66rem;padding:2px 9px;border-radius:12px;font-weight:500}
+.tbl-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 12px;text-align:left;font-size:.65rem;font-weight:600;color:var(--fg-d);text-transform:uppercase;letter-spacing:.7px;border-bottom:1px solid var(--brd);white-space:nowrap}
+tbody tr{border-bottom:1px solid rgba(24,48,34,.4);transition:background .15s}
+tbody tr:hover{background:var(--card-h)}
+tbody tr:last-child{border-bottom:none}
+tbody td{padding:10px 12px;font-size:.78rem;white-space:nowrap}
+.med-name{font-weight:600}.med-gen{font-size:.66rem;color:var(--fg-m);margin-top:1px}
+.badge{display:inline-flex;align-items:center;padding:2px 8px;border-radius:12px;font-size:.65rem;font-weight:500}
+.b-cat{background:var(--acc-g);color:var(--acc);border:1px solid rgba(0,230,118,.1)}
+.b-low{background:var(--red-g);color:var(--red);border:1px solid rgba(255,82,82,.1);animation:pulse-b 2s infinite}
+.b-ok{background:var(--acc-g);color:var(--acc);border:1px solid rgba(0,230,118,.1)}
+.b-exp{background:var(--purple-g);color:var(--purple);border:1px solid rgba(206,147,216,.12)}
+@keyframes pulse-b{0%,100%{opacity:1}50%{opacity:.5}}
+.acts{display:flex;gap:4px}
+.empty{text-align:center;padding:3rem 2rem}
+.empty i{font-size:2.5rem;color:var(--fg-d);margin-bottom:.7rem;opacity:.35;display:block}
+.empty h3{font-size:.95rem;color:var(--fg-m);margin-bottom:.3rem}
+.empty p{font-size:.75rem;color:var(--fg-d);margin-bottom:1rem}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:1.2rem}
+.dash-card{background:var(--card);border:1px solid var(--brd);border-radius:12px;overflow:hidden}
+.dash-card-h{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.1rem;border-bottom:1px solid var(--brd)}
+.dash-card-h h3{font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:6px}
+.dash-card-b{padding:1rem}
+.chart-wrap{position:relative;width:100%;height:200px}
+.chart-wrap canvas{width:100%!important;height:100%!important}
+.alert-list{max-height:240px;overflow-y:auto}
+.alert-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;transition:background .15s}
+.alert-item:hover{background:var(--card-h)}
+.alert-item .a-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.alert-item .a-text{flex:1;min-width:0}
+.alert-item .a-name{font-size:.76rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.alert-item .a-sub{font-size:.66rem;color:var(--fg-d)}
+.alert-item .a-val{font-size:.72rem;font-weight:600;flex-shrink:0}
+.recent-bill{display:flex;align-items:center;gap:10px;padding:9px 10px;border-bottom:1px solid rgba(24,48,34,.3)}
+.recent-bill:last-child{border-bottom:none}
+.rb-info{flex:1;min-width:0}
+.rb-no{font-size:.76rem;font-weight:600;color:var(--acc);font-family:monospace}
+.rb-pat{font-size:.72rem;color:var(--fg-m)}
+.rb-amt{font-size:.82rem;font-weight:600;flex-shrink:0}
+.rb-date{font-size:.66rem;color:var(--fg-d);flex-shrink:0}
+.ai-panel{background:linear-gradient(135deg,var(--card),rgba(0,230,118,.02));border:1px solid var(--brd);border-radius:12px;overflow:hidden;margin-bottom:1.2rem}
+.ai-panel-h{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.1rem;border-bottom:1px solid var(--brd);cursor:pointer}
+.ai-panel-h h3{font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.ai-panel-h h3 .ai-icon{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--acc),#40c4ff);display:flex;align-items:center;justify-content:center;font-size:12px;color:#060b08;animation:aiPulse 2s infinite}
+.ai-panel-h .ai-tag{font-size:.58rem;background:var(--acc-g);color:var(--acc);padding:2px 8px;border-radius:10px;font-weight:600;letter-spacing:.5px}
+.ai-panel-body{padding:1rem;display:none}
+.ai-panel-body.open{display:block}
+.ai-chat{max-height:280px;overflow-y:auto;margin-bottom:.8rem}
+.ai-msg{display:flex;gap:8px;margin-bottom:10px;animation:fadeUp .3s ease}
+.ai-msg.bot{flex-direction:row}.ai-msg.user{flex-direction:row-reverse}
+.ai-msg .ai-avatar{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.ai-msg.bot .ai-avatar{background:linear-gradient(135deg,var(--acc),#40c4ff);color:#060b08}
+.ai-msg.user .ai-avatar{background:var(--info-g);color:var(--info)}
+.ai-msg .ai-bubble{max-width:80%;padding:8px 12px;border-radius:10px;font-size:.78rem;line-height:1.5}
+.ai-msg.bot .ai-bubble{background:var(--bg2);border:1px solid var(--brd);color:var(--fg);border-top-left-radius:3px}
+.ai-msg.user .ai-bubble{background:var(--acc-g);border:1px solid rgba(0,230,118,.15);color:var(--fg);border-top-right-radius:3px}
+.ai-bubble strong{color:var(--acc)}
+.ai-bubble .ai-act{display:inline-flex;align-items:center;gap:4px;color:var(--info);cursor:pointer;font-size:.72rem;margin:4px 2px 0;padding:2px 6px;background:var(--info-g);border-radius:5px;border:none;font-family:'Poppins'}
+.ai-bubble .ai-act:hover{background:rgba(64,196,255,.2)}
+.ai-input-row{display:flex;gap:6px}
+.ai-input-row input{flex:1;padding:9px 12px;background:var(--bg2);border:1px solid var(--brd);border-radius:var(--radius);color:var(--fg);font-size:.78rem;outline:none}
+.ai-input-row input:focus{border-color:var(--acc)}
+.ai-quick{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.ai-quick-btn{padding:4px 10px;border-radius:20px;border:1px solid var(--brd);background:var(--card);color:var(--fg-m);font-size:.68rem;cursor:pointer;transition:all .15s;font-family:'Poppins'}
+.ai-quick-btn:hover{border-color:var(--acc);color:var(--acc);background:var(--acc-g)}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-ov.active{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--brd);border-radius:16px;width:92%;max-height:88vh;overflow-y:auto;transform:translateY(20px) scale(.97);transition:transform .25s}
+.modal-ov.active .modal{transform:translateY(0) scale(1)}
+.modal-sm{max-width:440px}.modal-md{max-width:600px}.modal-lg{max-width:680px}.modal-xl{max-width:960px}
+.m-head{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 1.2rem;border-bottom:1px solid var(--brd);position:sticky;top:0;background:var(--bg2);z-index:2;border-radius:16px 16px 0 0}
+.m-head h2{font-size:1rem;font-weight:700;display:flex;align-items:center;gap:8px}
+.m-close{width:30px;height:30px;border-radius:7px;border:1px solid var(--brd);background:var(--card);color:var(--fg-m);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:14px}
+.m-close:hover{background:var(--red-g);color:var(--red);border-color:rgba(255,82,82,.25)}
+.m-body{padding:1.2rem}
+.m-foot{display:flex;justify-content:flex-end;gap:7px;padding:.8rem 1.2rem;border-top:1px solid var(--brd);position:sticky;bottom:0;background:var(--bg2);border-radius:0 0 16px 16px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg.full{grid-column:1/-1}
+.fg textarea{resize:vertical;min-height:44px}
+.fg .ai-hint{font-size:.64rem;color:var(--info);margin-top:3px;display:flex;align-items:center;gap:3px}
+.toast-c{position:fixed;top:70px;right:1.2rem;z-index:300;display:flex;flex-direction:column;gap:6px}
+.toast{background:var(--bg2);border:1px solid var(--brd);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:.76rem;box-shadow:0 8px 30px rgba(0,0,0,.5);animation:tin .25s ease forwards;min-width:240px;max-width:380px}
+.toast.s{border-left:3px solid var(--acc)}.toast.e{border-left:3px solid var(--red)}.toast.w{border-left:3px solid var(--warn)}.toast.ai{border-left:3px solid var(--info)}
+.toast.s i{color:var(--acc)}.toast.e i{color:var(--red)}.toast.w i{color:var(--warn)}.toast.ai i{color:var(--info)}
+.toast.out{animation:tout .25s ease forwards}
+@keyframes tin{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes tout{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
+.bill-layout{display:grid;grid-template-columns:1fr 340px;gap:1.2rem;align-items:start}
+.bill-info-bar{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:1rem;margin-bottom:1rem;position:relative}
+.bill-items-wrap{background:var(--card);border:1px solid var(--brd);border-radius:12px;overflow:hidden}
+.bi-row{display:grid;grid-template-columns:32px 1fr 60px 75px 65px 30px;align-items:center;gap:5px;padding:8px 12px;border-bottom:1px solid rgba(24,48,34,.3);font-size:.78rem}
+.bi-row.hdr{font-size:.65rem;font-weight:600;color:var(--fg-d);text-transform:uppercase;letter-spacing:.5px}
+.bi-row input,.bi-row select{padding:6px 8px;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--fg);font-size:.74rem;outline:none;transition:border .15s}
+.bi-row input:focus,.bi-row select:focus{border-color:var(--acc)}
+.bi-row .amt{font-weight:600;color:var(--acc);text-align:right;font-size:.76rem}
+.bi-row .del-r{color:var(--red);cursor:pointer;opacity:.5;transition:opacity .15s;text-align:center}
+.bi-row .del-r:hover{opacity:1}
+.bill-summary{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:1.1rem;position:sticky;top:70px}
+.bill-summary h3{font-size:.88rem;font-weight:600;margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.b-line{display:flex;justify-content:space-between;padding:5px 0;font-size:.8rem;color:var(--fg-m)}
+.b-line.total{border-top:1px solid var(--brd-l);margin-top:6px;padding-top:10px;font-size:1.05rem;font-weight:700;color:var(--fg)}
+.b-line.total span:last-child{color:var(--acc)}
+.b-line .gst-c{color:var(--info)}
+.disc-input{width:65px;padding:4px 7px;background:var(--bg2);border:1px solid var(--brd);border-radius:6px;color:var(--fg);font-size:.78rem;outline:none;text-align:right}
+.inv-preview{background:#fff;color:#111;border-radius:10px;padding:1.8rem;font-family:'Poppins',sans-serif;max-width:780px;margin:0 auto}
+.inv-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:2.5px solid #00a152}
+.inv-hdr h1{font-family:'Playfair Display',serif;font-size:1.25rem;color:#0a3d20}
+.inv-hdr .inv-no{font-size:.76rem;color:#555;text-align:right}
+.inv-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;font-size:.78rem}
+.inv-info-grid h4{font-size:.68rem;text-transform:uppercase;color:#999;letter-spacing:1px;margin-bottom:4px}
+.inv-info-grid p{color:#333;margin:1px 0}
+.inv-tbl{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:.74rem}
+.inv-tbl th{background:#f0faf4;padding:7px 8px;text-align:left;font-size:.66rem;text-transform:uppercase;color:#0a3d20;border-bottom:2px solid #0a3d20;letter-spacing:.5px}
+.inv-tbl td{padding:6px 8px;border-bottom:1px solid #eee;color:#333}
+.inv-tbl .tr{text-align:right}
+.inv-totals{display:flex;justify-content:flex-end}
+.inv-totals table{font-size:.78rem;min-width:240px}
+.inv-totals td{padding:3px 8px;color:#333}
+.inv-totals .grand{font-size:.95rem;font-weight:700;border-top:2px solid #0a3d20;color:#0a3d20}
+.inv-foot{margin-top:1.2rem;padding-top:.8rem;border-top:1px dashed #ccc;text-align:center;font-size:.68rem;color:#999;line-height:1.5}
+.comp-card{background:var(--card);border:1px solid var(--brd);border-radius:10px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;transition:all .15s;margin-bottom:8px}
+.comp-card:hover{border-color:var(--brd-l)}
+.comp-info h3{font-size:.88rem;font-weight:600}
+.comp-info p{font-size:.72rem;color:var(--fg-m);margin-top:2px}
+.sett-section{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:1.2rem;margin-bottom:1rem}
+.sett-section h3{font-size:.88rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:7px}
+.sett-section h3 i{color:var(--acc);font-size:14px}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:45}
+@media(max-width:1024px){.bill-layout{grid-template-columns:1fr}.bill-summary{position:static}.dash-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sb-overlay.open{display:block}.main-area{margin-left:0}.tb-hamburger{display:flex}.content{padding:1rem}.stats-4{grid-template-columns:repeat(2,1fr)}.fgrid{grid-template-columns:1fr}.bi-row{grid-template-columns:26px 1fr 50px 60px 52px 26px;font-size:.68rem;gap:3px;padding:6px 8px}.hide-m{display:none!important}}
+@media(max-width:500px){.stats-4{grid-template-columns:1fr 1fr}.stats-3{grid-template-columns:1fr}}
+@media print{.sidebar,.topbar,.no-print{display:none!important}.main-area{margin-left:0!important}body{background:#fff;color:#000}.inv-preview{box-shadow:none;border:1px solid #ddd}}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;opacity:0;animation:fp linear infinite}
+@keyframes fp{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.2}90%{opacity:.05}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.tab-content.active{animation:fadeUp .3s ease}
+.ai-typing{display:inline-flex;gap:3px;padding:4px 0}
+.ai-typing span{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:typingDot 1.4s infinite}
+.ai-typing span:nth-child(2){animation-delay:.2s}.ai-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typingDot{0%,60%,100%{opacity:.2;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.auto-tag{display:inline-flex;align-items:center;gap:3px;font-size:.6rem;padding:1px 7px;border-radius:10px;font-weight:600}
+.auto-tag.fast{background:rgba(0,230,118,.1);color:var(--acc);border:1px solid rgba(0,230,118,.15)}
+.auto-tag.slow{background:var(--warn-g);color:var(--warn);border:1px solid rgba(255,171,64,.15)}
+.auto-tag.dead{background:var(--red-g);color:var(--red);border:1px solid rgba(255,82,82,.15)}
+.login-shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.login-success{animation:successPulse .5s ease}
+@keyframes successPulse{0%{box-shadow:0 24px 80px rgba(0,0,0,.6)}50%{box-shadow:0 24px 80px rgba(0,230,118,.3)}100%{box-shadow:0 24px 80px rgba(0,0,0,.6)}}
+.field-error input{border-color:var(--red)!important;box-shadow:0 0 0 3px var(--red-g)!important}
+</style>
+</head>
+<body>
+<div class="particles" id="particles"></div>
+<div class="toast-c" id="toastC"></div>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-wrap">
+<div class="login-box" id="loginBox">
+<div class="login-logo">
+<div class="ico"><i class="fas fa-prescription-bottle-medical"></i></div>
+<h1>Kamal Medical Stores</h1>
+<p>AI-Powered Pharmacy Management</p>
+<div class="ai-badge"><i class="fas fa-circle"></i> AI Automation Enabled</div>
+</div>
+<div class="fg" id="fgUser"><label for="loginUser">Username</label><input type="text" id="loginUser" placeholder="Enter username" autocomplete="off"></div>
+<div class="fg" id="fgPass"><label for="loginPass">Password</label><input type="password" id="loginPass" placeholder="Enter password" autocomplete="off"><button type="button" class="pw-toggle" id="pwToggle" tabindex="-1"><i class="fas fa-eye"></i></button></div>
+<div class="login-err" id="loginErr"></div>
+<button class="btn btn-p btn-block" id="loginBtn" type="button"><i class="fas fa-right-to-bracket"></i> Sign In</button>
+<div class="login-hint">Default credentials: <strong>admin</strong> / <strong>admin123</strong></div>
+</div>
+</div>
+
+<!-- APP -->
+<div id="appScreen" class="app" style="display:none">
+<div class="sb-overlay" id="sbOverlay" onclick="toggleSB()"></div>
+<aside class="sidebar" id="sidebar">
+<div class="sb-logo"><div class="sb-logo-ico"><i class="fas fa-prescription-bottle-medical"></i></div><div class="sb-logo-txt"><h2>Kamal Medical</h2><span>AI Pharmacy Software</span></div></div>
+<nav class="sb-nav">
+<div class="sb-nav-group"><div class="sb-nav-label">Main</div>
+<button class="sb-item active" data-tab="dashboard"><i class="fas fa-chart-pie"></i> Dashboard</button>
+<button class="sb-item" data-tab="medicines"><i class="fas fa-pills"></i> Medicines <span class="badge-r" id="badgeLow" style="display:none">0</span></button>
+<button class="sb-item" data-tab="companies"><i class="fas fa-building"></i> Companies</button>
+<button class="sb-item" data-tab="billing"><i class="fas fa-cash-register"></i> New Bill</button>
+</div>
+<div class="sb-nav-group"><div class="sb-nav-label">Records</div>
+<button class="sb-item" data-tab="bills"><i class="fas fa-receipt"></i> Bill History</button>
+<button class="sb-item" data-tab="patients"><i class="fas fa-users"></i> Patients</button>
+</div>
+<div class="sb-nav-group"><div class="sb-nav-label">Intelligence</div>
+<button class="sb-item" data-tab="ai"><i class="fas fa-robot"></i> AI Assistant <span class="tb-ai-dot"></span></button>
+<button class="sb-item" data-tab="reports"><i class="fas fa-chart-bar"></i> Reports</button>
+</div>
+<div class="sb-nav-group"><div class="sb-nav-label">System</div>
+<button class="sb-item" data-tab="settings"><i class="fas fa-gear"></i> Settings</button>
+</div>
+</nav>
+<div class="sb-footer">
+<div class="sb-user"><div class="avatar" id="uAvatar">A</div><div class="uinfo"><div class="uname" id="uName">Admin</div><div class="urole">Pharmacist</div></div></div>
+<button class="sb-logout" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+</div>
+</aside>
+<div class="main-area">
+<header class="topbar">
+<div class="tb-left"><button class="tb-hamburger" onclick="toggleSB()"><i class="fas fa-bars"></i></button><span class="tb-title" id="tbTitle">Dashboard</span></div>
+<div class="tb-right">
+<span class="tb-kbd hide-m">Ctrl+N Bill</span><span class="tb-kbd hide-m">Ctrl+M Med</span>
+<span class="tb-clock" id="tbClock"></span>
+<button class="tb-btn" title="Notifications" onclick="switchTab('medicines')"><i class="fas fa-bell"></i><span class="notif-dot" id="notifDot" style="display:none"></span></button>
+<button class="tb-btn" title="AI Assistant" onclick="switchTab('ai')" style="border-color:rgba(0,230,118,.3)"><i class="fas fa-robot" style="color:var(--acc)"></i></button>
+</div>
+</header>
+<div class="content">
+<!-- DASHBOARD -->
+<div class="tab-content active" id="tab-dashboard">
+<div class="ai-panel" id="aiStrip"><div class="ai-panel-h" onclick="toggleAIStrip()"><h3><span class="ai-icon"><i class="fas fa-robot"></i></span> AI Health Check <span class="ai-tag">LIVE</span></h3><i class="fas fa-chevron-down" id="aiStripChev" style="color:var(--fg-d);font-size:12px;transition:transform .2s"></i></div><div class="ai-panel-body" id="aiStripBody"><div id="aiInsights" style="font-size:.78rem;line-height:1.6"></div></div></div>
+<div class="stats-row stats-4">
+<div class="stat-card"><div class="glow glow-g"></div><div class="stat-icon si-g"><i class="fas fa-pills"></i></div><div class="stat-val" id="sTotal">0</div><div class="stat-lbl">Total Medicines</div></div>
+<div class="stat-card"><div class="glow glow-b"></div><div class="stat-icon si-b"><i class="fas fa-boxes-stacked"></i></div><div class="stat-val" id="sStock">0</div><div class="stat-lbl">Total Stock Units</div></div>
+<div class="stat-card"><div class="glow glow-o"></div><div class="stat-icon si-o"><i class="fas fa-indian-rupee-sign"></i></div><div class="stat-val" id="sValue">0</div><div class="stat-lbl">Stock Value (MRP)</div></div>
+<div class="stat-card"><div class="glow glow-r"></div><div class="stat-icon si-r"><i class="fas fa-triangle-exclamation"></i></div><div class="stat-val" id="sAlerts">0</div><div class="stat-lbl">Low Stock + Expired</div></div>
+</div>
+<div class="stats-row stats-4">
+<div class="stat-card"><div class="glow glow-g"></div><div class="stat-icon si-g"><i class="fas fa-building"></i></div><div class="stat-val" id="sComp">0</div><div class="stat-lbl">Companies</div></div>
+<div class="stat-card"><div class="glow glow-b"></div><div class="stat-icon si-b"><i class="fas fa-file-invoice"></i></div><div class="stat-val" id="sBills">0</div><div class="stat-lbl">Total Bills</div></div>
+<div class="stat-card"><div class="glow glow-o"></div><div class="stat-icon si-o"><i class="fas fa-coins"></i></div><div class="stat-val" id="sRevenue">0</div><div class="stat-lbl">Total Revenue</div></div>
+<div class="stat-card"><div class="glow glow-p"></div><div class="stat-icon si-p"><i class="fas fa-user-group"></i></div><div class="stat-val" id="sPatients">0</div><div class="stat-lbl">Unique Patients</div></div>
+</div>
+<div class="dash-grid">
+<div class="dash-card"><div class="dash-card-h"><h3><i class="fas fa-chart-line"></i> Sales Trend (7 Days)</h3></div><div class="dash-card-b"><div class="chart-wrap"><canvas id="salesChart"></canvas></div></div></div>
+<div class="dash-card"><div class="dash-card-h"><h3><i class="fas fa-chart-pie"></i> Stock by Category</h3></div><div class="dash-card-b"><div class="chart-wrap"><canvas id="catChart"></canvas></div></div></div>
+<div class="dash-card"><div class="dash-card-h"><h3><i class="fas fa-bell" style="color:var(--warn)"></i> Smart Alerts</h3><span class="cnt-badge" id="alertCnt">0</span></div><div class="dash-card-b"><div class="alert-list" id="alertList"></div></div></div>
+<div class="dash-card"><div class="dash-card-h"><h3><i class="fas fa-clock-rotate-left"></i> Recent Bills</h3></div><div class="dash-card-b" id="recentBills" style="max-height:260px;overflow-y:auto"></div></div>
+</div>
+</div>
+<!-- MEDICINES -->
+<div class="tab-content" id="tab-medicines">
+<div class="toolbar no-print"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="medSearch" placeholder="Search name, generic, batch..." oninput="renderMedTable()"></div><select class="fsel" id="medCatF" onchange="renderMedTable()"><option value="">All Categories</option></select><select class="fsel" id="medCompF" onchange="renderMedTable()"><option value="">All Companies</option></select><select class="fsel" id="medStkF" onchange="renderMedTable()"><option value="">All Stock</option><option value="low">Low Stock</option><option value="ok">In Stock</option><option value="exp">Expired</option></select><select class="fsel" id="medSort" onchange="renderMedTable()"><option value="name-asc">Name A-Z</option><option value="name-desc">Name Z-A</option><option value="sell-asc">Price Low-High</option><option value="sell-desc">Price High-Low</option><option value="qty-asc">Qty Low-High</option><option value="qty-desc">Qty High-Low</option></select><button class="btn btn-p" onclick="openMedModal()"><i class="fas fa-plus"></i><span class="hide-m">Add Medicine</span></button></div>
+<div class="tbl-wrap"><div class="tbl-head"><h2><i class="fas fa-table-list"></i> Medicine Inventory <span class="cnt-badge" id="medCnt">0</span></h2></div><div class="tbl-scroll"><table><thead><tr><th>#</th><th>Medicine</th><th>Code</th><th>Company</th><th>Category</th><th>Batch</th><th>Exp.</th><th>Purchase</th><th>MRP</th><th>Qty</th><th>Status</th><th>AI Tag</th><th class="no-print">Actions</th></tr></thead><tbody id="medTb"></tbody></table><div class="empty" id="medEmpty" style="display:none"><i class="fas fa-capsules"></i><h3>No Medicines Found</h3><p>Add your first medicine to get started</p></div></div></div>
+</div>
+<!-- COMPANIES -->
+<div class="tab-content" id="tab-companies"><div class="toolbar no-print"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="compSearch" placeholder="Search company..." oninput="renderCompList()"></div><button class="btn btn-p" onclick="openCompModal()"><i class="fas fa-plus"></i> Add Company</button></div><div id="compList"></div></div>
+<!-- BILLING -->
+<div class="tab-content" id="tab-billing"><div class="bill-layout"><div><div class="bill-info-bar no-print"><div class="fgrid"><div class="fg"><label>Patient Name *</label><input type="text" id="bPatient" placeholder="Patient name"></div><div class="fg"><label>Doctor Name</label><input type="text" id="bDoctor" placeholder="Doctor name"></div><div class="fg"><label>Phone</label><input type="text" id="bPhone" placeholder="Phone number"></div><div class="fg"><label>Payment Mode</label><select id="bPay"><option value="Cash">Cash</option><option value="UPI">UPI</option><option value="Card">Card</option><option value="Credit">Credit</option></select></div></div></div><div class="bill-items-wrap"><div class="bi-row hdr"><span>#</span><span>Medicine</span><span>Qty</span><span>Rate</span><span>Amount</span><span></span></div><div id="billItems"></div><div style="padding:8px 12px;border-top:1px solid var(--brd)" class="no-print"><button class="btn btn-s btn-sm" onclick="addBillRow()"><i class="fas fa-plus"></i> Add Item</button></div></div></div><div class="bill-summary no-print"><h3><i class="fas fa-calculator" style="color:var(--acc)"></i> Bill Summary</h3><div class="b-line"><span>Subtotal</span><span id="bSub">₹0.00</span></div><div class="b-line"><span>CGST</span><span class="gst-c" id="bCGST">₹0.00</span></div><div class="b-line"><span>SGST</span><span class="gst-c" id="bSGST">₹0.00</span></div><div class="b-line"><span>Discount</span><span><input type="number" class="disc-input" id="bDisc" value="0" min="0" oninput="calcBill()"></span></div><div class="b-line total"><span>Grand Total</span><span id="bGrand">₹0.00</span></div><div style="margin-top:.8rem;display:flex;flex-direction:column;gap:7px"><button class="btn btn-p btn-block" onclick="generateBill()"><i class="fas fa-file-invoice"></i> Generate Bill</button><button class="btn btn-s btn-block" onclick="clearBill()"><i class="fas fa-eraser"></i> Clear Bill</button></div></div></div></div>
+<!-- BILL HISTORY -->
+<div class="tab-content" id="tab-bills"><div class="toolbar no-print"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="bhSearch" placeholder="Search patient, bill no..." oninput="renderBillHist()"></div></div><div class="tbl-wrap"><div class="tbl-head"><h2><i class="fas fa-receipt"></i> Bill History <span class="cnt-badge" id="bhCnt">0</span></h2></div><div class="tbl-scroll"><table><thead><tr><th>Bill No</th><th>Date</th><th>Patient</th><th>Items</th><th>Total</th><th>Payment</th><th class="no-print">Actions</th></tr></thead><tbody id="bhTb"></tbody></table><div class="empty" id="bhEmpty" style="display:none"><i class="fas fa-receipt"></i><h3>No Bills Yet</h3></div></div></div></div>
+<!-- PATIENTS -->
+<div class="tab-content" id="tab-patients"><div class="toolbar no-print"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="patSearch" placeholder="Search patient..." oninput="renderPatients()"></div></div><div class="tbl-wrap"><div class="tbl-head"><h2><i class="fas fa-users"></i> Patient Records <span class="cnt-badge" id="patCnt">0</span></h2></div><div class="tbl-scroll"><table><thead><tr><th>#</th><th>Patient Name</th><th>Phone</th><th>Visits</th><th>Total Spent</th></tr></thead><tbody id="patTb"></tbody></table><div class="empty" id="patEmpty" style="display:none"><i class="fas fa-users"></i><h3>No Patients Yet</h3></div></div></div></div>
+<!-- AI ASSISTANT -->
+<div class="tab-content" id="tab-ai"><div style="max-width:720px;margin:0 auto"><div style="text-align:center;margin-bottom:1.2rem"><div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--acc),#40c4ff);display:inline-flex;align-items:center;justify-content:center;font-size:24px;color:#060b08;margin-bottom:.6rem;box-shadow:0 8px 30px rgba(0,230,118,.2)"><i class="fas fa-robot"></i></div><h2 style="font-size:1.2rem;font-weight:700">AI Pharmacy Assistant</h2><p style="font-size:.76rem;color:var(--fg-m);margin-top:4px">Ask anything about your pharmacy</p></div><div class="ai-quick" id="aiQuickBtns"><button class="ai-quick-btn" onclick="aiAsk('What is my current stock health?')">Stock Health</button><button class="ai-quick-btn" onclick="aiAsk('Show me sales summary')">Sales Summary</button><button class="ai-quick-btn" onclick="aiAsk('Which medicines need reordering?')">Reorder Alerts</button><button class="ai-quick-btn" onclick="aiAsk('Show expiry report')">Expiry Report</button></div><div class="ai-panel" style="margin-bottom:0"><div class="ai-chat" id="aiChat"></div><div class="ai-input-row"><input type="text" id="aiInput" placeholder="Ask AI..." onkeydown="if(event.key==='Enter')aiSend()"><button class="btn btn-ai" onclick="aiSend()"><i class="fas fa-paper-plane"></i></button></div></div></div></div>
+<!-- REPORTS -->
+<div class="tab-content" id="tab-reports"><div class="stats-row stats-3"><div class="stat-card"><div class="glow glow-g"></div><div class="stat-icon si-g"><i class="fas fa-coins"></i></div><div class="stat-val" id="rTodaySales">₹0</div><div class="stat-lbl">Today's Sales</div></div><div class="stat-card"><div class="glow glow-b"></div><div class="stat-icon si-b"><i class="fas fa-file-invoice"></i></div><div class="stat-val" id="rTodayBills">0</div><div class="stat-lbl">Today's Bills</div></div><div class="stat-card"><div class="glow glow-o"></div><div class="stat-icon si-o"><i class="fas fa-arrow-trend-up"></i></div><div class="stat-val" id="rProfit">₹0</div><div class="stat-lbl">Today's Profit (Est.)</div></div></div><div class="dash-grid" style="margin-top:0"><div class="dash-card"><div class="dash-card-h"><h3><i class="fas fa-clock" style="color:var(--red)"></i> Expiry Report</h3></div><div class="dash-card-b"><div class="alert-list" id="expiryReport"></div></div></div><div class="dash-card"><div class="dash-card-h"><h3><i class="fas fa-arrow-down" style="color:var(--warn)"></i> Low Stock Items</h3></div><div class="dash-card-b"><div class="alert-list" id="topSelling"></div></div></div></div></div>
+<!-- SETTINGS -->
+<div class="tab-content" id="tab-settings">
+<div class="sett-section"><h3><i class="fas fa-store"></i> Store Information</h3><div class="fgrid"><div class="fg full"><label>Store Name</label><input type="text" id="setName" placeholder="Store name"></div><div class="fg"><label>Phone</label><input type="text" id="setPhone" placeholder="Phone"></div><div class="fg"><label>Email</label><input type="email" id="setEmail" placeholder="Email"></div><div class="fg full"><label>Address</label><textarea id="setAddr" placeholder="Full address"></textarea></div><div class="fg"><label>GSTIN</label><input type="text" id="setGSTIN" placeholder="GST Number"></div><div class="fg"><label>Drug License No.</label><input type="text" id="setLicense" placeholder="License number"></div><div class="fg full"><label>Invoice Footer</label><textarea id="setTerms" placeholder="Terms..."></textarea></div></div><button class="btn btn-p" onclick="saveSettings()" style="margin-top:.5rem"><i class="fas fa-check"></i> Save Settings</button></div>
+<div class="sett-section"><h3><i class="fas fa-database"></i> Data Management</h3><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-d" onclick="if(confirm('Reset ALL data?')){localStorage.clear();location.reload();}"><i class="fas fa-trash-can"></i> Reset All Data</button></div></div>
+</div>
+</div></div></div>
+
+<!-- MEDICINE MODAL -->
+<div class="modal-ov" id="medModal"><div class="modal modal-lg"><div class="m-head"><h2 id="medModTitle">Add Medicine</h2><button class="m-close" onclick="closeModal('medModal')"><i class="fas fa-xmark"></i></button></div><div class="m-body"><div class="fgrid"><div class="fg full"><label>Medicine Name *</label><input type="text" id="fName" placeholder="e.g. Paracetamol 500mg"></div><div class="fg"><label>Generic / Salt Name</label><input type="text" id="fGeneric" placeholder="e.g. Acetaminophen"></div><div class="fg"><label>Product Code *</label><input type="text" id="fCode" placeholder="e.g. PM-001"></div><div class="fg"><label>HSN Code *</label><input type="text" id="fHSN" placeholder="e.g. 30049099"></div><div class="fg"><label>Category *</label><select id="fCat"><option value="">Select</option><option>Tablet</option><option>Capsule</option><option>Syrup</option><option>Injection</option><option>Cream/Ointment</option><option>Drops</option><option>Powder</option><option>Sachet</option><option>Inhaler</option><option>Vitamins</option><option>Ayurvedic</option><option>Surgical</option><option>Other</option></select></div><div class="fg"><label>Company *</label><select id="fComp"><option value="">Select</option></select></div><div class="fg"><label>Batch No. *</label><input type="text" id="fBatch" placeholder="e.g. B2024001"></div><div class="fg"><label>Expiry Date *</label><input type="date" id="fExp"></div><div class="fg"><label>Trade Rate (Purchase) *</label><input type="number" id="fTrade" placeholder="0.00" min="0" step="0.01"></div><div class="fg"><label>Selling Rate (MRP) *</label><input type="number" id="fSell" placeholder="0.00" min="0" step="0.01"></div><div class="fg"><label>GST % *</label><select id="fGST"><option value="0">0%</option><option value="5">5%</option><option value="12" selected>12%</option><option value="18">18%</option><option value="28">28%</option></select></div><div class="fg"><label>Quantity *</label><input type="number" id="fQty" placeholder="0" min="0"></div><div class="fg"><label>Low Stock Alert At</label><input type="number" id="fLow" placeholder="10" min="0" value="10"></div><div class="fg"><label>Pack Size</label><input type="text" id="fPack" placeholder="e.g. 10 tablets"></div><div class="fg"><label>Rack / Shelf</label><input type="text" id="fRack" placeholder="e.g. A-3"></div></div></div><div class="m-foot"><button class="btn btn-s" onclick="closeModal('medModal')">Cancel</button><button class="btn btn-p" id="medSaveBtn" onclick="saveMed()"><i class="fas fa-check"></i> Save</button></div></div></div>
+
+<!-- COMPANY MODAL -->
+<div class="modal-ov" id="compModal"><div class="modal modal-sm"><div class="m-head"><h2 id="compModTitle">Add Company</h2><button class="m-close" onclick="closeModal('compModal')"><i class="fas fa-xmark"></i></button></div><div class="m-body"><div class="fg"><label>Company Name *</label><input type="text" id="fcName" placeholder="e.g. Cipla Ltd"></div><div class="fg"><label>Phone</label><input type="text" id="fcPhone" placeholder="Phone"></div><div class="fg"><label>Email</label><input type="email" id="fcEmail" placeholder="Email"></div><div class="fg"><label>GSTIN</label><input type="text" id="fcGSTIN" placeholder="GST Number"></div><div class="fg full"><label>Address</label><textarea id="fcAddr" placeholder="Address"></textarea></div></div><div class="m-foot"><button class="btn btn-s" onclick="closeModal('compModal')">Cancel</button><button class="btn btn-p" id="compSaveBtn" onclick="saveComp()"><i class="fas fa-check"></i> Save</button></div></div></div>
+
+<!-- INVOICE MODAL -->
+<div class="modal-ov" id="invModal"><div class="modal" style="max-width:820px"><div class="m-head"><h2>Invoice Preview</h2><button class="m-close" onclick="closeModal('invModal')"><i class="fas fa-xmark"></i></button></div><div class="m-body" style="padding:0"><div id="invContent"></div></div><div class="m-foot no-print"><button class="btn btn-s" onclick="closeModal('invModal')">Close</button><button class="btn btn-p" onclick="printInv()"><i class="fas fa-print"></i> Print Invoice</button></div></div></div>
+
+<script>
+var LS={u:'km_user',p:'km_pass',m:'km_meds',c:'km_comps',b:'km_bills',s:'km_sett'};
+var meds=[],comps=[],bills=[],settings={},editMedId=null,editCompId=null,curUser='';
+
+var defSettings={name:'Kamal Medical Stores',phone:'9876543210',email:'kamalmedical@gmail.com',address:'Main Market, Medical Complex, New Delhi - 110001',gstin:'07AABCK9999P1Z5',license:'DL-2024-XXXXXX',terms:'Medicines once sold will not be returned.'};
+var sComps=[{name:'Cipla Ltd',phone:'022-26740000',email:'info@cipla.com',gstin:'27AABCC1234F1ZP',address:'Mumbai Central, Mumbai 400008'},{name:'Sun Pharmaceutical',phone:'022-26748000',email:'info@sunpharma.com',gstin:'27AABCS5678G1ZQ',address:'Andheri East, Mumbai 400093'},{name:'Dr. Reddy\'s Laboratories',phone:'040-49002424',email:'info@drreddys.com',gstin:'36AABCD9012H1ZR',address:'Hyderabad, Telangana 500090'},{name:'Himalaya Wellness',phone:'080-23714444',email:'info@himalayawellness.com',gstin:'29AABCH3456I1ZS',address:'Makali, Bangalore 562162'},{name:'Micro Labs Ltd',phone:'080-22442244',email:'info@microlabs.com',gstin:'29AABCM7890J1ZT',address:'Bangalore, Karnataka 560001'}];
+var sMeds=[{name:'Paracetamol 500mg',generic:'Acetaminophen',code:'PM-001',hsn:'30049099',cat:'Tablet',cid:0,batch:'B2024001',exp:'2026-03-15',trade:18.50,sell:25.00,gst:12,qty:250,low:20,pack:'10 tablets',rack:'A-1',notes:''},{name:'Amoxicillin 500mg',generic:'Amoxicillin Trihydrate',code:'AM-002',hsn:'30041099',cat:'Capsule',cid:1,batch:'B2024002',exp:'2025-11-20',trade:42.00,sell:58.00,gst:12,qty:120,low:15,pack:'10 capsules',rack:'A-2',notes:'Antibiotic'},{name:'Cetirizine 10mg',generic:'Cetirizine HCl',code:'CZ-003',hsn:'30049099',cat:'Tablet',cid:2,batch:'B2024003',exp:'2026-06-30',trade:12.00,sell:18.00,gst:12,qty:300,low:25,pack:'10 tablets',rack:'A-3',notes:''},{name:'Omeprazole 20mg',generic:'Omeprazole',code:'OM-004',hsn:'30049099',cat:'Capsule',cid:0,batch:'B2024004',exp:'2025-09-10',trade:28.00,sell:40.00,gst:12,qty:8,low:15,pack:'15 capsules',rack:'B-1',notes:'Low stock'},{name:'Dolo 650mg',generic:'Paracetamol 650mg',code:'DL-010',hsn:'30049099',cat:'Tablet',cid:4,batch:'B2024010',exp:'2026-04-05',trade:22.00,sell:32.00,gst:12,qty:500,low:50,pack:'15 tablets',rack:'A-1',notes:'Fast moving'},{name:'Vitamin D3 60K IU',generic:'Cholecalciferol',code:'VD-011',hsn:'30049099',cat:'Sachet',cid:3,batch:'B2024011',exp:'2026-12-31',trade:28.00,sell:42.00,gst:5,qty:100,low:20,pack:'1 sachet',rack:'D-1',notes:''},{name:'Metformin 500mg',generic:'Metformin HCl',code:'MF-006',hsn:'30049099',cat:'Tablet',cid:1,batch:'B2024006',exp:'2026-08-15',trade:15.00,sell:22.00,gst:5,qty:400,low:30,pack:'20 tablets',rack:'B-3',notes:'Anti-diabetic'}];
+
+function load(){
+    if(localStorage.getItem(LS.u)===null){localStorage.setItem(LS.u,'admin');localStorage.setItem(LS.p,'admin123');}
+    try{meds=JSON.parse(localStorage.getItem(LS.m))||[];}catch(e){meds=[];}
+    try{comps=JSON.parse(localStorage.getItem(LS.c))||[];}catch(e){comps=[];}
+    try{bills=JSON.parse(localStorage.getItem(LS.b))||[];}catch(e){bills=[];}
+    try{settings=JSON.parse(localStorage.getItem(LS.s))||{};}catch(e){settings={};}
+    settings=Object.assign({},defSettings,settings);
+    if(!meds.length&&!comps.length){
+        comps=sComps.map(function(c,i){return Object.assign({},c,{id:1000+i});});
+        meds=sMeds.map(function(m,i){return Object.assign({},m,{id:2000+i});});
+        var pNames=['Rajesh Kumar','Priya Sharma','Amit Patel','Sunita Devi','Mohammed Ali'];
+        for(var bi=0;bi<10;bi++){
+            var d=new Date();d.setDate(d.getDate()-Math.floor(Math.random()*14));
+            var cnt=1+Math.floor(Math.random()*3);var bItems=[];var used=[];
+            for(var ii=0;ii<cnt;ii++){var rm=meds[Math.floor(Math.random()*meds.length)];if(used.indexOf(rm.id)!==-1)continue;used.push(rm.id);var q=1+Math.floor(Math.random()*5);bItems.push({mid:rm.id,name:rm.name,code:rm.code,qty:q,rate:rm.sell,gst:rm.gst,amt:q*rm.sell,cgst:q*rm.sell*rm.gst/200,sgst:q*rm.sell*rm.gst/200,trade:rm.trade});}
+            if(!bItems.length)continue;
+            var sub=bItems.reduce(function(s,x){return s+x.amt;},0);var tcgst=bItems.reduce(function(s,x){return s+x.cgst;},0);var tsgst=bItems.reduce(function(s,x){return s+x.sgst;},0);
+            bills.push({id:Date.now()+bi,billNo:'KMS-'+String(bi+1).padStart(5,'0'),date:d.toISOString(),patient:pNames[Math.floor(Math.random()*pNames.length)],doctor:'',phone:'98'+Math.floor(10000000+Math.random()*90000000),payment:['Cash','UPI','Card'][Math.floor(Math.random()*3)],items:bItems,sub:sub,tcgst:tcgst,tsgst:tsgst,disc:0,grand:sub+tcgst+tsgst});
+        }
+        saveAll();
+    }
+    meds.forEach(function(m,i){if(m.id===undefined)m.id=Date.now()+i;});
+    comps.forEach(function(c,i){if(c.id===undefined)c.id=Date.now()+i;});
+}
+function saveAll(){localStorage.setItem(LS.m,JSON.stringify(meds));localStorage.setItem(LS.c,JSON.stringify(comps));localStorage.setItem(LS.b,JSON.stringify(bills));localStorage.setItem(LS.s,JSON.stringify(settings));}
+
+/* LOGIN */
+document.getElementById('loginBtn').addEventListener('click', doLogin);
+document.getElementById('loginPass').addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); });
+document.getElementById('loginUser').addEventListener('keydown', function(e){ if(e.key==='Enter') document.getElementById('loginPass').focus(); });
+document.getElementById('pwToggle').addEventListener('click', function(){
+    var p=document.getElementById('loginPass');var i=this.querySelector('i');
+    if(p.type==='password'){p.type='text';i.classList.remove('fa-eye');i.classList.add('fa-eye-slash');}
+    else{p.type='password';i.classList.remove('fa-eye-slash');i.classList.add('fa-eye');}
+});
+
+function doLogin(){
+    var u=document.getElementById('loginUser').value.trim();
+    var p=document.getElementById('loginPass').value;
+    var err=document.getElementById('loginErr');
+    var box=document.getElementById('loginBox');
+    err.textContent='';box.classList.remove('login-shake');
+    document.getElementById('fgUser').classList.remove('field-error');
+    document.getElementById('fgPass').classList.remove('field-error');
+    if(!u||!p){if(!u)document.getElementById('fgUser').classList.add('field-error');if(!p)document.getElementById('fgPass').classList.add('field-error');err.textContent='Please fill in all fields';box.classList.add('login-shake');return;}
+    var btn=document.getElementById('loginBtn');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Signing in...';
+    setTimeout(function(){
+        if(u===localStorage.getItem(LS.u)&&p===localStorage.getItem(LS.p)){
+            curUser=u;box.classList.add('login-success');
+            setTimeout(function(){document.getElementById('loginScreen').style.display='none';document.getElementById('appScreen').style.display='flex';document.getElementById('uName').textContent=u.charAt(0).toUpperCase()+u.slice(1);document.getElementById('uAvatar').textContent=u.charAt(0).toUpperCase();document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';renderAll();},400);
+        }else{box.classList.add('login-shake');err.textContent='Invalid username or password';document.getElementById('loginPass').value='';document.getElementById('loginPass').focus();}
+        btn.disabled=false;btn.innerHTML='<i class="fas fa-right-to-bracket"></i> Sign In';
+    },500);
+}
+function doLogout(){document.getElementById('appScreen').style.display='none';document.getElementById('loginScreen').style.display='flex';switchTab('dashboard');}
+
+/* UTILS */
+function esc(s){if(!s)return '';var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function compName(id){var c=comps.find(function(x){return x.id===id;});return c?c.name:'-';}
+function fmtCur(n){return '\u20B9'+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtNum(n){return Math.abs(n).toLocaleString('en-IN',{maximumFractionDigits:0});}
+function fmtDate(d){return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'2-digit'});}
+function isExpired(d){if(!d)return false;return new Date(d)<new Date();}
+function toast(msg,type){type=type||'s';var c=document.getElementById('toastC');var t=document.createElement('div');t.className='toast '+type;var ic={s:'fa-circle-check',e:'fa-circle-xmark',w:'fa-triangle-exclamation',ai:'fa-robot'};t.innerHTML='<i class="fas '+(ic[type]||ic.s)+'"></i><span>'+msg+'</span>';c.appendChild(t);setTimeout(function(){t.classList.add('out');setTimeout(function(){if(t.parentNode)t.remove();},250);},3500);}
+function openModal(id){document.getElementById(id).classList.add('active');}
+function closeModal(id){document.getElementById(id).classList.remove('active');}
+document.querySelectorAll('.modal-ov').forEach(function(ov){ov.addEventListener('mousedown',function(e){if(e.target===ov)ov.classList.remove('active');});});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('.modal-ov.active').forEach(function(m){m.classList.remove('active');});});
+function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sbOverlay').classList.toggle('open');}
+
+/* NAV */
+var tabTitles={dashboard:'Dashboard',medicines:'Medicine Inventory',companies:'Companies',billing:'New Bill',bills:'Bill History',patients:'Patient Records',ai:'AI Assistant',reports:'Reports & Analytics',settings:'Settings'};
+function switchTab(tab){document.querySelectorAll('.sb-item').forEach(function(b){b.classList.toggle('active',b.dataset.tab===tab);});document.querySelectorAll('.tab-content').forEach(function(t){t.classList.toggle('active',t.id==='tab-'+tab);});document.getElementById('tbTitle').textContent=tabTitles[tab]||tab;if(tab==='billing'){if(!document.querySelector('#billItems .bi-row:not(.hdr)'))addBillRow();}if(tab==='medicines'){updateMedFilters();renderMedTable();}if(tab==='companies')renderCompList();if(tab==='bills')renderBillHist();if(tab==='patients')renderPatients();if(tab==='reports')renderReports();if(tab==='settings')loadSettings();if(tab==='dashboard')renderDash();if(tab==='ai'&&document.getElementById('aiChat').children.length===0)aiAutoGreeting();document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('open');}
+document.querySelectorAll('.sb-item').forEach(function(b){b.addEventListener('click',function(){switchTab(b.dataset.tab);});});
+function updateClock(){var n=new Date();document.getElementById('tbClock').textContent=n.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
+setInterval(updateClock,1000);updateClock();
+
+/* MEDICINES */
+function updateMedFilters(){var cs=document.getElementById('medCatF'),co=document.getElementById('medCompF');var cats=[];meds.forEach(function(m){if(m.cat&&cats.indexOf(m.cat)===-1)cats.push(m.cat);});cats.sort();cs.innerHTML='<option value="">All Categories</option>'+cats.map(function(c){return '<option value="'+esc(c)+'">'+esc(c)+'</option>';}).join('');co.innerHTML='<option value="">All Companies</option>'+comps.sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>';}).join('');}
+function updateCompSel(){var s=document.getElementById('fComp');s.innerHTML='<option value="">Select Company</option>'+comps.sort(function(a,b){return a.name.localeCompare(b.name);}).map(function(c){return '<option value="'+c.id+'">'+esc(c.name)+'</option>';}).join('');}
+function filteredMeds(){var q=(document.getElementById('medSearch').value||'').toLowerCase();var cat=document.getElementById('medCatF').value,comp=document.getElementById('medCompF').value,stk=document.getElementById('medStkF').value,sort=document.getElementById('medSort').value;
+return meds.filter(function(m){var ms=!q||m.name.toLowerCase().indexOf(q)!==-1||(m.generic||'').toLowerCase().indexOf(q)!==-1||(m.code||'').toLowerCase().indexOf(q)!==-1;var mc=!cat||m.cat===cat,mco=!comp||String(m.cid)===String(comp);var qty=m.qty||0,ls=m.low||10,ms2=true;if(stk==='low')ms2=qty<=ls;else if(stk==='ok')ms2=qty>ls;else if(stk==='exp')ms2=isExpired(m.exp);return ms&&mc&&mco&&ms2;}).sort(function(a,b){var parts=sort.split('-'),k=parts[0],d=parts[1],va,vb;if(k==='name'){va=a.name.toLowerCase();vb=b.name.toLowerCase();}else if(k==='sell'){va=a.sell||0;vb=b.sell||0;}else if(k==='qty'){va=a.qty||0;vb=b.qty||0;}if(va<vb)return d==='asc'?-1:1;if(va>vb)return d==='asc'?1:-1;return 0;});}
+
+function renderMedTable(){
+    var list=filteredMeds();var tb=document.getElementById('medTb'),emp=document.getElementById('medEmpty');document.getElementById('medCnt').textContent=list.length;
+    if(!list.length){tb.innerHTML='';emp.style.display='block';return;}emp.style.display='none';
+    tb.innerHTML=list.map(function(m,i){
+        var q=m.qty||0,ls=m.low||10,exp=isExpired(m.exp),low=q<=ls&&!exp;
+        var st=exp?'<span class="badge b-exp">Expired</span>':low?'<span class="badge b-low">Low Stock</span>':'<span class="badge b-ok">In Stock</span>';
+        var tag='<span class="auto-tag fast"><i class="fas fa-bolt"></i> Fast</span>';
+        return '<tr><td>'+(i+1)+'</td><td><div class="med-name">'+esc(m.name)+'</div><div class="med-gen">'+esc(m.generic)+'</div></td><td>'+esc(m.code)+'</td><td>'+esc(compName(m.cid))+'</td><td><span class="badge b-cat">'+esc(m.cat)+'</span></td><td>'+esc(m.batch)+'</td><td>'+fmtDate(m.exp)+'</td><td>₹'+(m.trade||0).toFixed(2)+'</td><td>₹'+(m.sell||0).toFixed(2)+'</td><td>'+(m.qty||0)+'</td><td>'+st+'</td><td>'+tag+'</td><td class="acts no-print"><button class="btn btn-s btn-sm" onclick="editMed('+m.id+')"><i class="fas fa-pen"></i></button><button class="btn btn-d btn-sm" onclick="delMed('+m.id+')"><i class="fas fa-trash"></i></button></td></tr>';
+    }).join('');
+}
+
+function openMedModal(id){editMedId=id||null;document.getElementById('medModTitle').textContent=id?'Edit Medicine':'Add Medicine';updateCompSel();if(id){var m=meds.find(function(x){return x.id===id;});if(m){document.getElementById('fName').value=m.name||'';document.getElementById('fGeneric').value=m.generic||'';document.getElementById('fCode').value=m.code||'';document.getElementById('fHSN').value=m.hsn||'';document.getElementById('fCat').value=m.cat||'';document.getElementById('fComp').value=m.cid||'';document.getElementById('fBatch').value=m.batch||'';document.getElementById('fExp').value=m.exp||'';document.getElementById('fTrade').value=m.trade||'';document.getElementById('fSell').value=m.sell||'';document.getElementById('fGST').value=m.gst||'12';document.getElementById('fQty').value=m.qty||'';document.getElementById('fLow').value=m.low||'10';document.getElementById('fPack').value=m.pack||'';document.getElementById('fRack').value=m.rack||'';}}else{['fName','fGeneric','fCode','fHSN','fBatch','fTrade','fSell','fPack','fRack'].forEach(function(x){document.getElementById(x).value='';});document.getElementById('fCat').value='';document.getElementById('fComp').value='';document.getElementById('fExp').value='';document.getElementById('fGST').value='12';document.getElementById('fQty').value='';document.getElementById('fLow').value='10';}openModal('medModal');}
+function editMed(id){openMedModal(id);}
+function saveMed(){var n=document.getElementById('fName').value.trim();if(!n){toast('Medicine name is required','e');return;}var obj={name:n,generic:document.getElementById('fGeneric').value.trim(),code:document.getElementById('fCode').value.trim(),hsn:document.getElementById('fHSN').value.trim(),cat:document.getElementById('fCat').value,cid:parseInt(document.getElementById('fComp').value)||0,batch:document.getElementById('fBatch').value.trim(),exp:document.getElementById('fExp').value,trade:parseFloat(document.getElementById('fTrade').value)||0,sell:parseFloat(document.getElementById('fSell').value)||0,gst:parseInt(document.getElementById('fGST').value)||0,qty:parseInt(document.getElementById('fQty').value)||0,low:parseInt(document.getElementById('fLow').value)||10,pack:document.getElementById('fPack').value.trim(),rack:document.getElementById('fRack').value.trim()};if(editMedId){var idx=meds.findIndex(function(x){return x.id===editMedId;});if(idx>-1)meds[idx]=Object.assign(meds[idx],obj);toast('Medicine updated');}else{obj.id=Date.now();meds.push(obj);toast('Medicine added');}saveAll();closeModal('medModal');renderMedTable();renderDash();}
+function delMed(id){var m=meds.find(function(x){return x.id===id;});if(!m)return;if(confirm('Delete "'+m.name+'"?')){meds=meds.filter(function(x){return x.id!==id;});saveAll();renderMedTable();renderDash();toast('Medicine deleted','w');}}
+
+/* COMPANIES */
+function renderCompList(){var q=(document.getElementById('compSearch').value||'').toLowerCase();var list=comps.filter(function(c){return!q||c.name.toLowerCase().indexOf(q)!==-1;});var el=document.getElementById('compList');if(!list.length){el.innerHTML='<div class="empty"><i class="fas fa-building"></i><h3>No Companies Found</h3></div>';return;}el.innerHTML=list.map(function(c){return '<div class="comp-card"><div class="comp-info"><h3>'+esc(c.name)+'</h3><p>'+(c.phone||'')+(c.gstin?' | '+esc(c.gstin):'')+'</p></div><div class="acts"><button class="btn btn-s btn-sm" onclick="openCompModal('+c.id+')"><i class="fas fa-pen"></i></button><button class="btn btn-d btn-sm" onclick="delComp('+c.id+')"><i class="fas fa-trash"></i></button></div></div>';}).join('');}
+function openCompModal(id){editCompId=id||null;document.getElementById('compModTitle').textContent=id?'Edit Company':'Add Company';if(id){var c=comps.find(function(x){return x.id===id;});if(c){document.getElementById('fcName').value=c.name||'';document.getElementById('fcPhone').value=c.phone||'';document.getElementById('fcEmail').value=c.email||'';document.getElementById('fcGSTIN').value=c.gstin||'';document.getElementById('fcAddr').value=c.address||'';}}else{['fcName','fcPhone','fcEmail','fcGSTIN','fcAddr'].forEach(function(x){document.getElementById(x).value='';});}openModal('compModal');}
+function saveComp(){var n=document.getElementById('fcName').value.trim();if(!n){toast('Company name is required','e');return;}var obj={name:n,phone:document.getElementById('fcPhone').value.trim(),email:document.getElementById('fcEmail').value.trim(),gstin:document.getElementById('fcGSTIN').value.trim(),address:document.getElementById('fcAddr').value.trim()};if(editCompId){var idx=comps.findIndex(function(x){return x.id===editCompId;});if(idx>-1)comps[idx]=Object.assign(comps[idx],obj);toast('Company updated');}else{obj.id=Date.now();comps.push(obj);toast('Company added');}saveAll();closeModal('compModal');renderCompList();}
+function delComp(id){var c=comps.find(function(x){return x.id===id;});if(!c)return;if(confirm('Delete "'+c.name+'"?')){comps=comps.filter(function(x){return x.id!==id;});saveAll();renderCompList();toast('Company deleted','w');}}
+
+/* BILLING */
+var billRowN=0;
+function addBillRow(){billRowN++;var sel='<select class="bmsel" onchange="onBMChg(this)"><option value="">Select Medicine</option>'+meds.filter(function(m){return!isExpired(m.exp)&&m.qty>0;}).map(function(m){return '<option value="'+m.id+'">'+esc(m.name)+' (₹'+m.sell+') [Qty:'+m.qty+']</option>';}).join('')+'</select>';var html='<div class="bi-row"><span>'+(billRowN)+'</span><span>'+sel+'</span><span><input type="number" class="bqty" value="1" min="1" onchange="calcBill()"></span><span class="amt" style="text-align:right">₹0.00</span><span class="amt" style="text-align:right">₹0.00</span><span class="del-r" onclick="this.parentElement.remove();calcBill()"><i class="fas fa-times"></i></span></div>';document.getElementById('billItems').insertAdjacentHTML('beforeend',html);}
+function onBMChg(sel){var row=sel.closest('.bi-row');var mid=parseInt(sel.value);var m=meds.find(function(x){return x.id===mid;});if(m){row.querySelector('.amt').textContent='₹'+m.sell.toFixed(2);row.querySelector('.bqty').max=m.qty;row.querySelector('.bqty').value=1;}else{row.querySelector('.amt').textContent='₹0.00';}calcBill();}
+function calcBill(){var rows=document.querySelectorAll('#billItems .bi-row:not(.hdr)');var sub=0,cgst=0,sgst=0;rows.forEach(function(r){var sel=r.querySelector('.bmsel');var m=meds.find(function(x){return x.id===parseInt(sel.value);});if(m){var q=parseInt(r.querySelector('.bqty').value)||0;var amt=q*m.sell;sub+=amt;cgst+=amt*m.gst/200;sgst+=amt*m.gst/200;r.querySelectorAll('.amt')[1].textContent='₹'+amt.toFixed(2);}});var disc=parseFloat(document.getElementById('bDisc').value)||0;document.getElementById('bSub').textContent='₹'+sub.toFixed(2);document.getElementById('bCGST').textContent='₹'+cgst.toFixed(2);document.getElementById('bSGST').textContent='₹'+sgst.toFixed(2);document.getElementById('bGrand').textContent='₹'+(sub+cgst+sgst-disc).toFixed(2);}
+function generateBill(){var pat=document.getElementById('bPatient').value.trim();if(!pat){toast('Patient name is required','e');return;}var rows=document.querySelectorAll('#billItems .bi-row:not(.hdr)');var items=[];var valid=true;rows.forEach(function(r){var sel=r.querySelector('.bmsel');var m=meds.find(function(x){return x.id===parseInt(sel.value);});if(!m){valid=false;return;}var q=parseInt(r.querySelector('.bqty').value)||0;if(q<=0||q>m.qty){valid=false;toast(m.name+': Invalid qty','w');return;}items.push({mid:m.id,name:m.name,code:m.code||'',qty:q,rate:m.sell,gst:m.gst||0,amt:q*m.sell,cgst:q*m.sell*m.gst/200,sgst:q*m.sell*m.gst/200,trade:m.trade||0});});if(!valid||!items.length){toast('Add valid items','e');return;}var sub=items.reduce(function(s,x){return s+x.amt;},0);var tcgst=items.reduce(function(s,x){return s+x.cgst;},0);var tsgst=items.reduce(function(s,x){return s+x.sgst;},0);var disc=parseFloat(document.getElementById('bDisc').value)||0;var grand=sub+tcgst+tsgst-disc;var billNo='KMS-'+String(bills.length+1).padStart(5,'0');var bill={id:Date.now(),billNo:billNo,date:new Date().toISOString(),patient:pat,doctor:document.getElementById('bDoctor').value.trim(),phone:document.getElementById('bPhone').value.trim(),payment:document.getElementById('bPay').value,items:items,sub:sub,tcgst:tcgst,tsgst:tsgst,disc:disc,grand:grand};bills.push(bill);items.forEach(function(it){var m=meds.find(function(x){return x.id===it.mid;});if(m)m.qty-=it.qty;});saveAll();showInvoice(bill);clearBill();toast('Bill generated successfully');renderDash();}
+function clearBill(){document.getElementById('billItems').innerHTML='';document.getElementById('bPatient').value='';document.getElementById('bDoctor').value='';document.getElementById('bPhone').value='';document.getElementById('bDisc').value='0';billRowN=0;calcBill();}
+function showInvoice(b){var html='<div class="inv-preview"><div class="inv-hdr"><div><h1>'+esc(settings.name)+'</h1><p style="font-size:.72rem;color:#666;margin-top:4px">'+esc(settings.address)+'</p><p style="font-size:.68rem;color:#888">GSTIN: '+esc(settings.gstin)+' | License: '+esc(settings.license)+'</p></div><div class="inv-no"><strong style="font-size:.9rem;color:#111">TAX INVOICE</strong><br>Bill No: <strong>'+esc(b.billNo)+'</strong><br>Date: '+fmtDate(b.date)+'<br>Payment: '+esc(b.payment)+'</div></div><div class="inv-info-grid"><div><h4>Billed To</h4><p><strong>'+esc(b.patient)+'</strong></p>'+(b.phone?'<p>Phone: '+esc(b.phone)+'</p>':'')+(b.doctor?'<p>Dr. '+esc(b.doctor)+'</p>':'')+'</div></div><table class="inv-tbl"><thead><tr><th>#</th><th>Medicine</th><th>Code</th><th>Qty</th><th>Rate</th><th class="tr">Amount</th><th class="tr">CGST</th><th class="tr">SGST</th><th class="tr">Total</th></tr></thead><tbody>'+b.items.map(function(it,i){return '<tr><td>'+(i+1)+'</td><td>'+esc(it.name)+'</td><td>'+esc(it.code)+'</td><td>'+it.qty+'</td><td class="tr">₹'+it.rate.toFixed(2)+'</td><td class="tr">₹'+it.amt.toFixed(2)+'</td><td class="tr">₹'+it.cgst.toFixed(2)+'</td><td class="tr">₹'+it.sgst.toFixed(2)+'</td><td class="tr"><strong>₹'+(it.amt+it.cgst+it.sgst).toFixed(2)+'</strong></td></tr>';}).join('')+'</tbody></table><div class="inv-totals"><table><tr><td>Subtotal</td><td style="text-align:right">₹'+b.sub.toFixed(2)+'</td></tr><tr><td>CGST</td><td style="text-align:right">₹'+b.tcgst.toFixed(2)+'</td></tr><tr><td>SGST</td><td style="text-align:right">₹'+b.tsgst.toFixed(2)+'</td></tr>'+(b.disc?'<tr><td>Discount</td><td style="text-align:right;color:red">-₹'+b.disc.toFixed(2)+'</td></tr>':'')+'<tr class="grand"><td>Grand Total</td><td style="text-align:right">₹'+b.grand.toFixed(2)+'</td></tr></table></div><div class="inv-foot">'+esc(settings.terms)+'<br>Thank you for visiting!</div></div>';document.getElementById('invContent').innerHTML=html;openModal('invModal');}
+function printInv(){window.print();}
+
+/* BILL HISTORY */
+function renderBillHist(){var q=(document.getElementById('bhSearch').value||'').toLowerCase();var list=bills.filter(function(b){return!q||b.patient.toLowerCase().indexOf(q)!==-1||b.billNo.toLowerCase().indexOf(q)!==-1;}).reverse();document.getElementById('bhCnt').textContent=list.length;var tb=document.getElementById('bhTb'),emp=document.getElementById('bhEmpty');if(!list.length){tb.innerHTML='';emp.style.display='block';return;}emp.style.display='none';tb.innerHTML=list.map(function(b){return '<tr><td style="font-family:monospace;color:var(--acc)">'+esc(b.billNo)+'</td><td>'+fmtDate(b.date)+'</td><td>'+esc(b.patient)+'</td><td>'+b.items.length+'</td><td><strong>'+fmtCur(b.grand)+'</strong></td><td><span class="badge b-cat">'+esc(b.payment)+'</span></td><td class="acts no-print"><button class="btn btn-s btn-sm" onclick=\'showInvoice('+JSON.stringify(b).replace(/'/g,"&#39;")+')\'><i class="fas fa-eye"></i></button></td></tr>';}).join('');}
+
+/* PATIENTS */
+function renderPatients(){var q=(document.getElementById('patSearch').value||'').toLowerCase();var pm={};bills.forEach(function(b){if(!pm[b.patient])pm[b.patient]={name:b.patient,phone:b.phone,visits:0,spent:0};pm[b.patient].visits++;pm[b.patient].spent+=(b.grand||0);});var list=Object.values(pm).filter(function(p){return!q||p.name.toLowerCase().indexOf(q)!==-1;});document.getElementById('patCnt').textContent=list.length;var tb=document.getElementById('patTb'),emp=document.getElementById('patEmpty');if(!list.length){tb.innerHTML='';emp.style.display='block';return;}emp.style.display='none';tb.innerHTML=list.map(function(p,i){return '<tr><td>'+(i+1)+'</td><td><strong>'+esc(p.name)+'</strong></td><td>'+esc(p.phone)+'</td><td>'+p.visits+'</td><td><strong>'+fmtCur(p.spent)+'</strong></td></tr>';}).join('');}
+
+/* REPORTS */
+function renderReports(){var today=new Date().toISOString().split('T')[0];var tb=bills.filter(function(b){return b.date&&b.date.startsWith(today);});var todayRev=tb.reduce(function(s,b){return s+(b.grand||0);},0);var todayP=0;tb.forEach(function(b){b.items.forEach(function(it){todayP+=it.qty*(it.rate-(it.trade||0));});});document.getElementById('rTodaySales').textContent='₹'+fmtNum(todayRev);document.getElementById('rTodayBills').textContent=tb.length;document.getElementById('rProfit').textContent='₹'+fmtNum(todayP);var expRep=document.getElementById('expiryReport');var expMeds=meds.filter(function(m){return isExpired(m.exp);});var nearExp=meds.filter(function(m){return!isExpired(m.exp)&&(new Date(m.exp)-new Date())/(1000*60*60*24)<=90;}).sort(function(a,b){return new Date(a.exp)-new Date(b.exp);});var expHtml='';if(expMeds.length)expHtml+=expMeds.map(function(m){return '<div class="alert-item"><div class="a-icon" style="background:var(--red-g);color:var(--red)"><i class="fas fa-skull-crossbones"></i></div><div class="a-text"><div class="a-name">'+esc(m.name)+'</div><div class="a-sub">'+esc(m.batch)+'</div></div><div class="a-val" style="color:var(--red)">Expired</div></div>';}).join('');if(nearExp.length)expHtml+=nearExp.map(function(m){return '<div class="alert-item"><div class="a-icon" style="background:var(--warn-g);color:var(--warn)"><i class="fas fa-clock"></i></div><div class="a-text"><div class="a-name">'+esc(m.name)+'</div><div class="a-sub">'+esc(m.batch)+'</div></div><div class="a-val" style="color:var(--warn)">'+Math.ceil((new Date(m.exp)-new Date())/(1000*60*60*24))+'d</div></div>';}).join('');if(!expHtml)expHtml='<div style="text-align:center;padding:1rem;color:var(--fg-d)">No expiry concerns</div>';expRep.innerHTML=expHtml;var lowRep=document.getElementById('topSelling');var lowMeds=meds.filter(function(m){return(m.qty||0)<=(m.low||10)&&!isExpired(m.exp);});lowRep.innerHTML=lowMeds.length?lowMeds.map(function(m){return '<div class="alert-item"><div class="a-icon" style="background:var(--info-g);color:var(--info)"><i class="fas fa-arrow-down"></i></div><div class="a-text"><div class="a-name">'+esc(m.name)+'</div><div class="a-sub">'+esc(compName(m.cid))+'</div></div><div class="a-val" style="color:var(--red)">'+m.qty+' left</div></div>';}).join(''):'<div style="text-align:center;padding:1rem;color:var(--fg-d)">All stock levels OK</div>';}
+
+/* SETTINGS */
+function loadSettings(){document.getElementById('setName').value=settings.name||'';document.getElementById('setPhone').value=settings.phone||'';document.getElementById('setEmail').value=settings.email||'';document.getElementById('setAddr').value=settings.address||'';document.getElementById('setGSTIN').value=settings.gstin||'';document.getElementById('setLicense').value=settings.license||'';document.getElementById('setTerms').value=settings.terms||'';}
+function saveSettings(){settings.name=document.getElementById('setName').value.trim();settings.phone=document.getElementById('setPhone').value.trim();settings.email=document.getElementById('setEmail').value.trim();settings.address=document.getElementById('setAddr').value.trim();settings.gstin=document.getElementById('setGSTIN').value.trim();settings.license=document.getElementById('setLicense').value.trim();settings.terms=document.getElementById('setTerms').value.trim();saveAll();toast('Settings saved');}
+
+/* AI */
+function aiAddMsg(text,isUser){var chat=document.getElementById('aiChat');var div=document.createElement('div');div.className='ai-msg '+(isUser?'user':'bot');div.innerHTML='<div class="ai-avatar"><i class="fas '+(isUser?'fa-user':'fa-robot')+'"></i></div><div class="ai-bubble">'+text+'</div>';chat.appendChild(div);chat.scrollTop=chat.scrollHeight;}
+function aiAddTyping(){var chat=document.getElementById('aiChat');var div=document.createElement('div');div.className='ai-msg bot';div.id='aiTyping';div.innerHTML='<div class="ai-avatar"><i class="fas fa-robot"></i></div><div class="ai-bubble"><div class="ai-typing"><span></span><span></span><span></span></div></div>';chat.appendChild(div);chat.scrollTop=chat.scrollHeight;}
+function aiRemoveTyping(){var el=document.getElementById('aiTyping');if(el)el.remove();}
+function aiAutoGreeting(){var chat=document.getElementById('aiChat');chat.innerHTML='';aiAddMsg('Hello! I\'m your <strong>AI Pharmacy Assistant</strong>. Ask me about stock, sales, expiry, or patients.',false);}
+function aiAsk(q){document.getElementById('aiInput').value=q;aiSend();}
+function aiSend(){var input=document.getElementById('aiInput');var q=input.value.trim();if(!q)return;aiAddMsg(esc(q),true);input.value='';aiAddTyping();setTimeout(function(){aiRemoveTyping();aiAddMsg(aiProcess(q),false);},600+Math.random()*800);}
+function aiProcess(q){var ql=q.toLowerCase();var totalRev=bills.reduce(function(s,b){return s+(b.grand||0);},0);var lowMeds=meds.filter(function(m){return(m.qty||0)<=(m.low||10)&&!isExpired(m.exp);});var expMeds=meds.filter(function(m){return isExpired(m.exp);});
+if(ql.indexOf('stock')!==-1){var h=meds.filter(function(m){return(m.qty||0)>(m.low||10)&&!isExpired(m.exp);}).length;return 'Stock Health: <strong>'+h+'/'+meds.length+' healthy</strong><br>Low: '+lowMeds.length+' | Expired: '+expMeds.length;}
+if(ql.indexOf('sale')!==-1){return 'Total Revenue: <strong>₹'+fmtNum(totalRev)+'</strong><br>Total Bills: <strong>'+bills.length+'</strong>';}
+if(ql.indexOf('expir')!==-1){if(!expMeds.length)return 'No expired medicines!';return '<strong style="color:var(--red)">'+expMeds.length+' Expired:</strong><br>'+expMeds.map(function(m){return '• '+m.name;}).join('<br>');}
+if(ql.indexOf('reorder')!==-1||ql.indexOf('low')!==-1){if(!lowMeds.length)return 'No reorder needed.';return '<strong>'+lowMeds.length+' Items to Reorder:</strong><br>'+lowMeds.map(function(m){return '• <strong>'+m.name+'</strong> (Qty: '+m.qty+')';}).join('<br>');}
+return 'I can help with: <strong>Stock</strong>, <strong>Sales</strong>, <strong>Expiry</strong>, <strong>Reorder</strong> alerts.';}
+
+/* DASHBOARD */
+function renderDash(){var total=meds.length;var stock=meds.reduce(function(s,m){return s+(m.qty||0);},0);var value=meds.reduce(function(s,m){return s+(m.sell||0)*(m.qty||0);},0);var low=meds.filter(function(m){return(m.qty||0)<=(m.low||10);}).length;var expired=meds.filter(function(m){return isExpired(m.exp);}).length;var revenue=bills.reduce(function(s,b){return s+(b.grand||0);},0);var patientsSet={};bills.forEach(function(b){patientsSet[b.patient]=true;});document.getElementById('sTotal').textContent=total;document.getElementById('sStock').textContent=fmtNum(stock);document.getElementById('sValue').textContent='₹'+fmtNum(value);document.getElementById('sAlerts').textContent=low+expired;document.getElementById('sAlerts').style.color=(low+expired)>0?'var(--red)':'var(--fg)';document.getElementById('sComp').textContent=comps.length;document.getElementById('sBills').textContent=bills.length;document.getElementById('sRevenue').textContent='₹'+fmtNum(revenue);document.getElementById('sPatients').textContent=Object.keys(patientsSet).length;var badgeLow=document.getElementById('badgeLow'),notifDot=document.getElementById('notifDot');if(low+expired>0){badgeLow.style.display='inline';badgeLow.textContent=low+expired;notifDot.style.display='block';}else{badgeLow.style.display='none';notifDot.style.display='none';}renderAlerts();renderRecentBills();setTimeout(function(){drawSalesChart();drawCatChart();},50);}
+function renderAlerts(){var list=document.getElementById('alertList');var alerts=[];meds.forEach(function(m){if(isExpired(m.exp))alerts.push({type:'exp',name:m.name,val:'Expired'});else if((m.qty||0)<=(m.low||10))alerts.push({type:'low',name:m.name,val: m.qty+' left'});});document.getElementById('alertCnt').textContent=alerts.length;if(!alerts.length){list.innerHTML='<div style="text-align:center;padding:1.5rem;color:var(--fg-d)"><i class="fas fa-check-circle" style="font-size:1.5rem;color:var(--acc);display:block;margin-bottom:.5rem;opacity:.5"></i>All clear!</div>';return;}list.innerHTML=alerts.slice(0,10).map(function(a){var ico=a.type==='exp'?'fa-skull-crossbones':'fa-arrow-down';var bg=a.type==='exp'?'var(--red-g)':'var(--info-g)';var clr=a.type==='exp'?'var(--red)':'var(--info)';return '<div class="alert-item"><div class="a-icon" style="background:'+bg+';color:'+clr+'"><i class="fas '+ico+'"></i></div><div class="a-text"><div class="a-name">'+esc(a.name)+'</div></div><div class="a-val" style="color:'+clr+'">'+a.val+'</div></div>';}).join('');}
+function renderRecentBills(){var el=document.getElementById('recentBills');var recent=bills.slice(-5).reverse();if(!recent.length){el.innerHTML='<div style="text-align:center;padding:1.5rem;color:var(--fg-d)">No bills yet</div>';return;}el.innerHTML=recent.map(function(b){return '<div class="recent-bill"><div class="rb-info"><div class="rb-no">'+esc(b.billNo)+'</div><div class="rb-pat">'+esc(b.patient)+'</div></div><div class="rb-date">'+fmtDate(b.date)+'</div><div class="rb-amt">'+fmtCur(b.grand)+'</div></div>';}).join('');}
+function drawSalesChart(){var canvas=document.getElementById('salesChart');if(!canvas)return;var ctx=canvas.getContext('2d');var dpr=window.devicePixelRatio||1;var rect=canvas.parentElement.getBoundingClientRect();canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';ctx.scale(dpr,dpr);var W=rect.width,H=rect.height,pad={t:20,r:15,b:30,l:50};var cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;var days=[],vals=[];for(var i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);var key=d.toISOString().split('T')[0];days.push(d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'}));vals.push(bills.filter(function(b){return b.date&&b.date.startsWith(key);}).reduce(function(s,b){return s+(b.grand||0);},0));}var maxV=Math.max.apply(null,vals.concat([1]));ctx.strokeStyle='rgba(0,230,118,.08)';ctx.lineWidth=1;for(var j=0;j<=4;j++){var y=pad.t+cH-cH*(j/4);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();ctx.fillStyle='rgba(111,168,133,.5)';ctx.font='10px Poppins';ctx.textAlign='right';ctx.fillText('₹'+Math.round(maxV*j/4),pad.l-6,y+3);}ctx.textAlign='center';ctx.fillStyle='rgba(111,168,133,.5)';ctx.font='10px Poppins';var step=cW/6;days.forEach(function(d,i){ctx.fillText(d,pad.l+step*i,H-pad.b+16);});var pts=vals.map(function(v,i){return{x:pad.l+step*i,y:pad.t+cH-cH*(v/maxV)};});var grad=ctx.createLinearGradient(0,pad.t,0,pad.t+cH);grad.addColorStop(0,'rgba(0,230,118,0.15)');grad.addColorStop(1,'rgba(0,230,118,0)');ctx.beginPath();ctx.moveTo(pts[0].x,pad.t+cH);pts.forEach(function(p){ctx.lineTo(p.x,p.y);});ctx.lineTo(pts[pts.length-1].x,pad.t+cH);ctx.closePath();ctx.fillStyle=grad;ctx.fill();ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);for(var k=1;k<pts.length;k++){var xc=(pts[k-1].x+pts[k].x)/2,yc=(pts[k-1].y+pts[k].y)/2;ctx.quadraticCurveTo(pts[k-1].x,pts[k-1].y,xc,yc);}ctx.lineTo(pts[pts.length-1].x,pts[pts.length-1].y);ctx.strokeStyle='#00e676';ctx.lineWidth=2.5;ctx.stroke();pts.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,4,0,Math.PI*2);ctx.fillStyle='#00e676';ctx.fill();});}
+function drawCatChart(){var canvas=document.getElementById('catChart');if(!canvas)return;var ctx=canvas.getContext('2d');var dpr=window.devicePixelRatio||1;var rect=canvas.parentElement.getBoundingClientRect();canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';ctx.scale(dpr,dpr);var W=rect.width,H=rect.height;var catMap={};meds.forEach(function(m){var c=m.cat||'Other';catMap[c]=(catMap[c]||0)+(m.qty||0);});var entries=Object.entries(catMap).sort(function(a,b){return b[1]-a[1];}).slice(0,8);var total=entries.reduce(function(s,e){return s+e[1];},0);if(!total){ctx.fillStyle='rgba(111,168,133,.3)';ctx.font='12px Poppins';ctx.textAlign='center';ctx.fillText('No data',W/2,H/2);return;}var colors=['#00e676','#40c4ff','#ffab40','#ff5252','#ce93d8','#69f0ae','#ff6e40','#ffd740'];var cx=W*.38,cy=H/2,r=Math.min(cx-15,cy-15,80);var angle=-Math.PI/2;entries.forEach(function(e,i){var slice=(e[1]/total)*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,angle,angle+slice);ctx.closePath();ctx.fillStyle=colors[i%colors.length];ctx.fill();ctx.strokeStyle='#111d16';ctx.lineWidth=2;ctx.stroke();angle+=slice;});ctx.beginPath();ctx.arc(cx,cy,r*.55,0,Math.PI*2);ctx.fillStyle='#111d16';ctx.fill();ctx.fillStyle='#e2f3e8';ctx.font='bold 16px Poppins';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(fmtNum(total),cx,cy-6);ctx.fillStyle='rgba(111,168,133,.6)';ctx.font='9px Poppins';ctx.fillText('Units',cx,cy+10);var lx=W*.68,ly=16;entries.forEach(function(e,i){var yy=ly+i*22;ctx.fillStyle=colors[i%colors.length];ctx.fillRect(lx,yy,10,10);ctx.fillStyle='#e2f3e8';ctx.font='11px Poppins';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(e[0],lx+16,yy-1);ctx.fillStyle='rgba(111,168,133,.6)';ctx.font='10px Poppins';ctx.fillText(e[1]+' ('+Math.round(e[1]/total*100)+'%)',lx+16,yy+11);});}
+
+function renderAll(){renderDash();updateMedFilters();renderMedTable();renderCompList();}
+
+/* PARTICLES */
+function initParticles(){var c=document.getElementById('particles');for(var i=0;i<30;i++){var p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=Math.random()*10+'s';p.style.width=p.style.height=(1+Math.random()*2)+'px';c.appendChild(p);}}
+initParticles();
+
+/* INIT */
+load();
+setTimeout(function(){document.getElementById('loginUser').focus();},100);
+</script>
+</body>
+</html>
