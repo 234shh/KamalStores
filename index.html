@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -191,7 +192,22 @@ tbody td{padding:10px 12px;font-size:.78rem;white-space:nowrap}
 @keyframes tin{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 @keyframes tout{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(20px)}}
 .bill-layout{display:grid;grid-template-columns:1fr 340px;gap:1.2rem;align-items:start}
-.bill-info-bar{background:var(--card);border:1px solid var(--brd);border-radius:12px;padding:1rem;margin-bottom:1rem;position:relative}
+<div class="bill-info-bar no-print">
+    <div class="fgrid">
+        <div class="fg"><label>Patient Name *</label><input type="text" id="bPatient" placeholder="Patient name"></div>
+        <div class="fg"><label>Bill Date *</label><input type="date" id="bDate"></div>
+        <div class="fg"><label>Doctor Name</label><input type="text" id="bDoctor" placeholder="Doctor name"></div>
+        <div class="fg"><label>Phone</label><input type="text" id="bPhone" placeholder="Phone number"></div>
+        <div class="fg full"><label>Payment Mode</label>
+            <select id="bPay">
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
+                <option value="Card">Card</option>
+                <option value="Credit">Credit</option>
+            </select>
+        </div>
+    </div>
+</div>
 .bill-items-wrap{background:var(--card);border:1px solid var(--brd);border-radius:12px;overflow:hidden}
 .bi-row{display:grid;grid-template-columns:32px 1fr 60px 75px 65px 30px;align-items:center;gap:5px;padding:8px 12px;border-bottom:1px solid rgba(24,48,34,.3);font-size:.78rem}
 .bi-row.hdr{font-size:.65rem;font-weight:600;color:var(--fg-d);text-transform:uppercase;letter-spacing:.5px}
@@ -214,10 +230,9 @@ tbody td{padding:10px 12px;font-size:.78rem;white-space:nowrap}
 .inv-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.2rem;font-size:.78rem}
 .inv-info-grid h4{font-size:.68rem;text-transform:uppercase;color:#999;letter-spacing:1px;margin-bottom:4px}
 .inv-info-grid p{color:#333;margin:1px 0}
-.inv-tbl{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:.74rem}
-.inv-tbl th{background:#f0faf4;padding:7px 8px;text-align:left;font-size:.66rem;text-transform:uppercase;color:#0a3d20;border-bottom:2px solid #0a3d20;letter-spacing:.5px}
-.inv-tbl td{padding:6px 8px;border-bottom:1px solid #eee;color:#333}
-.inv-tbl .tr{text-align:right}
+.inv-tbl { width: 100%; border-collapse: collapse; margin-bottom: 1rem; font-size: .74rem; }
+.inv-tbl th { background: #f0faf4; padding: 8px 6px; text-align: left; font-size: .65rem; text-transform: uppercase; color: #0a3d20; border-bottom: 2px solid #0a3d20; letter-spacing: .5px; font-weight: 600; }
+.inv-tbl td { padding: 8px 6px; border-bottom: 1px solid #eee; color: #333; vertical-align: top; }
 .inv-totals{display:flex;justify-content:flex-end}
 .inv-totals table{font-size:.78rem;min-width:240px}
 .inv-totals td{padding:3px 8px;color:#333}
@@ -234,7 +249,16 @@ tbody td{padding:10px 12px;font-size:.78rem;white-space:nowrap}
 @media(max-width:1024px){.bill-layout{grid-template-columns:1fr}.bill-summary{position:static}.dash-grid{grid-template-columns:1fr}}
 @media(max-width:768px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sb-overlay.open{display:block}.main-area{margin-left:0}.tb-hamburger{display:flex}.content{padding:1rem}.stats-4{grid-template-columns:repeat(2,1fr)}.fgrid{grid-template-columns:1fr}.bi-row{grid-template-columns:26px 1fr 50px 60px 52px 26px;font-size:.68rem;gap:3px;padding:6px 8px}.hide-m{display:none!important}}
 @media(max-width:500px){.stats-4{grid-template-columns:1fr 1fr}.stats-3{grid-template-columns:1fr}}
-@media print{.sidebar,.topbar,.no-print{display:none!important}.main-area{margin-left:0!important}body{background:#fff;color:#000}.inv-preview{box-shadow:none;border:1px solid #ddd}}
+@media print {
+    .sidebar, .topbar, .no-print, .m-head, .m-foot { display: none !important; }
+    .main-area { margin-left: 0 !important; }
+    body { background: #fff; color: #000; }
+    .modal-ov { position: static; opacity: 1; pointer-events: all; background: none; backdrop-filter: none; }
+    .modal { transform: none; box-shadow: none; border: none; max-width: 100%; width: 100%; }
+    .inv-preview { box-shadow: none; border: 1px solid #ddd; padding: 1.5rem; }
+    .inv-tbl th { background: #f0faf4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .inv-hdr { border-bottom-color: #0a3d20 !important; }
+}
 .particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
 .particle{position:absolute;width:2px;height:2px;background:var(--acc);border-radius:50%;opacity:0;animation:fp linear infinite}
 @keyframes fp{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.2}90%{opacity:.05}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
@@ -346,7 +370,7 @@ tbody td{padding:10px 12px;font-size:.78rem;white-space:nowrap}
 <!-- COMPANIES -->
 <div class="tab-content" id="tab-companies"><div class="toolbar no-print"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="compSearch" placeholder="Search company..." oninput="renderCompList()"></div><button class="btn btn-p" onclick="openCompModal()"><i class="fas fa-plus"></i> Add Company</button></div><div id="compList"></div></div>
 <!-- BILLING -->
-<div class="tab-content" id="tab-billing"><div class="bill-layout"><div><div class="bill-info-bar no-print"><div class="fgrid"><div class="fg"><label>Patient Name *</label><input type="text" id="bPatient" placeholder="Patient name"></div><div class="fg"><label>Doctor Name</label><input type="text" id="bDoctor" placeholder="Doctor name"></div><div class="fg"><label>Phone</label><input type="text" id="bPhone" placeholder="Phone number"></div><div class="fg"><label>Payment Mode</label><select id="bPay"><option value="Cash">Cash</option><option value="UPI">UPI</option><option value="Card">Card</option><option value="Credit">Credit</option></select></div></div></div><div class="bill-items-wrap"><div class="bi-row hdr"><span>#</span><span>Medicine</span><span>Qty</span><span>Rate</span><span>Amount</span><span></span></div><div id="billItems"></div><div style="padding:8px 12px;border-top:1px solid var(--brd)" class="no-print"><button class="btn btn-s btn-sm" onclick="addBillRow()"><i class="fas fa-plus"></i> Add Item</button></div></div></div><div class="bill-summary no-print"><h3><i class="fas fa-calculator" style="color:var(--acc)"></i> Bill Summary</h3><div class="b-line"><span>Subtotal</span><span id="bSub">₹0.00</span></div><div class="b-line"><span>CGST</span><span class="gst-c" id="bCGST">₹0.00</span></div><div class="b-line"><span>SGST</span><span class="gst-c" id="bSGST">₹0.00</span></div><div class="b-line"><span>Discount</span><span><input type="number" class="disc-input" id="bDisc" value="0" min="0" oninput="calcBill()"></span></div><div class="b-line total"><span>Grand Total</span><span id="bGrand">₹0.00</span></div><div style="margin-top:.8rem;display:flex;flex-direction:column;gap:7px"><button class="btn btn-p btn-block" onclick="generateBill()"><i class="fas fa-file-invoice"></i> Generate Bill</button><button class="btn btn-s btn-block" onclick="clearBill()"><i class="fas fa-eraser"></i> Clear Bill</button></div></div></div></div>
+<div class="tab-content" id="tab-billing"><div class="bill-layout"><div><div class="bill-info-bar no-print"><div class="fgrid"><div class="fg"><label>Patient Name *</label><input type="text" id="bPatient" placeholder="Patient name"></div><div class="fg"><label>Bill Date *</label><input type="date" id="bDate"></div><div class="fg"><label>Doctor Name</label><input type="text" id="bDoctor" placeholder="Doctor name"></div><div class="fg"><label>Phone</label><input type="text" id="bPhone" placeholder="Phone number"></div><div class="fg"><label>Payment Mode</label><select id="bPay"><option value="Cash">Cash</option><option value="UPI">UPI</option><option value="Card">Card</option><option value="Credit">Credit</option></select></div></div></div><div class="bill-items-wrap"><div class="bi-row hdr"><span>#</span><span>Medicine</span><span>Qty</span><span>Rate</span><span>Amount</span><span></span></div><div id="billItems"></div><div style="padding:8px 12px;border-top:1px solid var(--brd)" class="no-print"><button class="btn btn-s btn-sm" onclick="addBillRow()"><i class="fas fa-plus"></i> Add Item</button></div></div></div><div class="bill-summary no-print"><h3><i class="fas fa-calculator" style="color:var(--acc)"></i> Bill Summary</h3><div class="b-line"><span>Subtotal</span><span id="bSub">₹0.00</span></div><div class="b-line"><span>CGST</span><span class="gst-c" id="bCGST">₹0.00</span></div><div class="b-line"><span>SGST</span><span class="gst-c" id="bSGST">₹0.00</span></div><div class="b-line"><span>Discount</span><span><input type="number" class="disc-input" id="bDisc" value="0" min="0" oninput="calcBill()"></span></div><div class="b-line total"><span>Grand Total</span><span id="bGrand">₹0.00</span></div><div style="margin-top:.8rem;display:flex;flex-direction:column;gap:7px"><button class="btn btn-p btn-block" onclick="generateBill()"><i class="fas fa-file-invoice"></i> Generate Bill</button><button class="btn btn-s btn-block" onclick="clearBill()"><i class="fas fa-eraser"></i> Clear Bill</button></div></div></div></div>
 <!-- BILL HISTORY -->
 <div class="tab-content" id="tab-bills"><div class="toolbar no-print"><div class="search-box"><i class="fas fa-search"></i><input type="text" id="bhSearch" placeholder="Search patient, bill no..." oninput="renderBillHist()"></div></div><div class="tbl-wrap"><div class="tbl-head"><h2><i class="fas fa-receipt"></i> Bill History <span class="cnt-badge" id="bhCnt">0</span></h2></div><div class="tbl-scroll"><table><thead><tr><th>Bill No</th><th>Date</th><th>Patient</th><th>Items</th><th>Total</th><th>Payment</th><th class="no-print">Actions</th></tr></thead><tbody id="bhTb"></tbody></table><div class="empty" id="bhEmpty" style="display:none"><i class="fas fa-receipt"></i><h3>No Bills Yet</h3></div></div></div></div>
 <!-- PATIENTS -->
@@ -391,7 +415,7 @@ function load(){
         meds=sMeds.map(function(m,i){return Object.assign({},m,{id:2000+i});});
         var pNames=['Rajesh Kumar','Priya Sharma','Amit Patel','Sunita Devi','Mohammed Ali'];
         for(var bi=0;bi<10;bi++){
-            var d=new Date();d.setDate(d.getDate()-Math.floor(Math.random()*14));
+            var d=new Date();d.setDate(d.getDate()-Math.floor(Math.random()*30));
             var cnt=1+Math.floor(Math.random()*3);var bItems=[];var used=[];
             for(var ii=0;ii<cnt;ii++){var rm=meds[Math.floor(Math.random()*meds.length)];if(used.indexOf(rm.id)!==-1)continue;used.push(rm.id);var q=1+Math.floor(Math.random()*5);bItems.push({mid:rm.id,name:rm.name,code:rm.code,qty:q,rate:rm.sell,gst:rm.gst,amt:q*rm.sell,cgst:q*rm.sell*rm.gst/200,sgst:q*rm.sell*rm.gst/200,trade:rm.trade});}
             if(!bItems.length)continue;
@@ -440,7 +464,25 @@ function esc(s){if(!s)return '';var d=document.createElement('div');d.textConten
 function compName(id){var c=comps.find(function(x){return x.id===id;});return c?c.name:'-';}
 function fmtCur(n){return '\u20B9'+Math.abs(n).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function fmtNum(n){return Math.abs(n).toLocaleString('en-IN',{maximumFractionDigits:0});}
-function fmtDate(d){return new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'2-digit'});}
+function fmtDate(d, full) {
+    var date = new Date(d);
+    if (full) {
+        return date.toLocaleDateString('en-IN', { 
+            day: '2-digit', 
+            month: 'long', 
+            year: 'numeric' 
+        }) + ' | ' + date.toLocaleTimeString('en-IN', { 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            hour12: true 
+        });
+    }
+    return date.toLocaleDateString('en-IN', { 
+        day: '2-digit', 
+        month: 'short', 
+        year: '2-digit' 
+    });
+}
 function isExpired(d){if(!d)return false;return new Date(d)<new Date();}
 function toast(msg,type){type=type||'s';var c=document.getElementById('toastC');var t=document.createElement('div');t.className='toast '+type;var ic={s:'fa-circle-check',e:'fa-circle-xmark',w:'fa-triangle-exclamation',ai:'fa-robot'};t.innerHTML='<i class="fas '+(ic[type]||ic.s)+'"></i><span>'+msg+'</span>';c.appendChild(t);setTimeout(function(){t.classList.add('out');setTimeout(function(){if(t.parentNode)t.remove();},250);},3500);}
 function openModal(id){document.getElementById(id).classList.add('active');}
@@ -451,7 +493,10 @@ function toggleSB(){document.getElementById('sidebar').classList.toggle('open');
 
 /* NAV */
 var tabTitles={dashboard:'Dashboard',medicines:'Medicine Inventory',companies:'Companies',billing:'New Bill',bills:'Bill History',patients:'Patient Records',ai:'AI Assistant',reports:'Reports & Analytics',settings:'Settings'};
-function switchTab(tab){document.querySelectorAll('.sb-item').forEach(function(b){b.classList.toggle('active',b.dataset.tab===tab);});document.querySelectorAll('.tab-content').forEach(function(t){t.classList.toggle('active',t.id==='tab-'+tab);});document.getElementById('tbTitle').textContent=tabTitles[tab]||tab;if(tab==='billing'){if(!document.querySelector('#billItems .bi-row:not(.hdr)'))addBillRow();}if(tab==='medicines'){updateMedFilters();renderMedTable();}if(tab==='companies')renderCompList();if(tab==='bills')renderBillHist();if(tab==='patients')renderPatients();if(tab==='reports')renderReports();if(tab==='settings')loadSettings();if(tab==='dashboard')renderDash();if(tab==='ai'&&document.getElementById('aiChat').children.length===0)aiAutoGreeting();document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('open');}
+function switchTab(tab){document.querySelectorAll('.sb-item').forEach(function(b){b.classList.toggle('active',b.dataset.tab===tab);});document.querySelectorAll('.tab-content').forEach(function(t){t.classList.toggle('active',t.id==='tab-'+tab);});document.getElementById('tbTitle').textContent=tabTitles[tab]||tab;if(tab==='billing'){
+    if(!document.querySelector('#billItems .bi-row:not(.hdr)')) addBillRow();
+    document.getElementById('bDate').valueAsDate = new Date();
+}if(tab==='medicines'){updateMedFilters();renderMedTable();}if(tab==='companies')renderCompList();if(tab==='bills')renderBillHist();if(tab==='patients')renderPatients();if(tab==='reports')renderReports();if(tab==='settings')loadSettings();if(tab==='dashboard')renderDash();if(tab==='ai'&&document.getElementById('aiChat').children.length===0)aiAutoGreeting();document.getElementById('sidebar').classList.remove('open');document.getElementById('sbOverlay').classList.remove('open');}
 document.querySelectorAll('.sb-item').forEach(function(b){b.addEventListener('click',function(){switchTab(b.dataset.tab);});});
 function updateClock(){var n=new Date();document.getElementById('tbClock').textContent=n.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+' '+n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});}
 setInterval(updateClock,1000);updateClock();
@@ -489,9 +534,158 @@ var billRowN=0;
 function addBillRow(){billRowN++;var sel='<select class="bmsel" onchange="onBMChg(this)"><option value="">Select Medicine</option>'+meds.filter(function(m){return!isExpired(m.exp)&&m.qty>0;}).map(function(m){return '<option value="'+m.id+'">'+esc(m.name)+' (₹'+m.sell+') [Qty:'+m.qty+']</option>';}).join('')+'</select>';var html='<div class="bi-row"><span>'+(billRowN)+'</span><span>'+sel+'</span><span><input type="number" class="bqty" value="1" min="1" onchange="calcBill()"></span><span class="amt" style="text-align:right">₹0.00</span><span class="amt" style="text-align:right">₹0.00</span><span class="del-r" onclick="this.parentElement.remove();calcBill()"><i class="fas fa-times"></i></span></div>';document.getElementById('billItems').insertAdjacentHTML('beforeend',html);}
 function onBMChg(sel){var row=sel.closest('.bi-row');var mid=parseInt(sel.value);var m=meds.find(function(x){return x.id===mid;});if(m){row.querySelector('.amt').textContent='₹'+m.sell.toFixed(2);row.querySelector('.bqty').max=m.qty;row.querySelector('.bqty').value=1;}else{row.querySelector('.amt').textContent='₹0.00';}calcBill();}
 function calcBill(){var rows=document.querySelectorAll('#billItems .bi-row:not(.hdr)');var sub=0,cgst=0,sgst=0;rows.forEach(function(r){var sel=r.querySelector('.bmsel');var m=meds.find(function(x){return x.id===parseInt(sel.value);});if(m){var q=parseInt(r.querySelector('.bqty').value)||0;var amt=q*m.sell;sub+=amt;cgst+=amt*m.gst/200;sgst+=amt*m.gst/200;r.querySelectorAll('.amt')[1].textContent='₹'+amt.toFixed(2);}});var disc=parseFloat(document.getElementById('bDisc').value)||0;document.getElementById('bSub').textContent='₹'+sub.toFixed(2);document.getElementById('bCGST').textContent='₹'+cgst.toFixed(2);document.getElementById('bSGST').textContent='₹'+sgst.toFixed(2);document.getElementById('bGrand').textContent='₹'+(sub+cgst+sgst-disc).toFixed(2);}
-function generateBill(){var pat=document.getElementById('bPatient').value.trim();if(!pat){toast('Patient name is required','e');return;}var rows=document.querySelectorAll('#billItems .bi-row:not(.hdr)');var items=[];var valid=true;rows.forEach(function(r){var sel=r.querySelector('.bmsel');var m=meds.find(function(x){return x.id===parseInt(sel.value);});if(!m){valid=false;return;}var q=parseInt(r.querySelector('.bqty').value)||0;if(q<=0||q>m.qty){valid=false;toast(m.name+': Invalid qty','w');return;}items.push({mid:m.id,name:m.name,code:m.code||'',qty:q,rate:m.sell,gst:m.gst||0,amt:q*m.sell,cgst:q*m.sell*m.gst/200,sgst:q*m.sell*m.gst/200,trade:m.trade||0});});if(!valid||!items.length){toast('Add valid items','e');return;}var sub=items.reduce(function(s,x){return s+x.amt;},0);var tcgst=items.reduce(function(s,x){return s+x.cgst;},0);var tsgst=items.reduce(function(s,x){return s+x.sgst;},0);var disc=parseFloat(document.getElementById('bDisc').value)||0;var grand=sub+tcgst+tsgst-disc;var billNo='KMS-'+String(bills.length+1).padStart(5,'0');var bill={id:Date.now(),billNo:billNo,date:new Date().toISOString(),patient:pat,doctor:document.getElementById('bDoctor').value.trim(),phone:document.getElementById('bPhone').value.trim(),payment:document.getElementById('bPay').value,items:items,sub:sub,tcgst:tcgst,tsgst:tsgst,disc:disc,grand:grand};bills.push(bill);items.forEach(function(it){var m=meds.find(function(x){return x.id===it.mid;});if(m)m.qty-=it.qty;});saveAll();showInvoice(bill);clearBill();toast('Bill generated successfully');renderDash();}
-function clearBill(){document.getElementById('billItems').innerHTML='';document.getElementById('bPatient').value='';document.getElementById('bDoctor').value='';document.getElementById('bPhone').value='';document.getElementById('bDisc').value='0';billRowN=0;calcBill();}
-function showInvoice(b){var html='<div class="inv-preview"><div class="inv-hdr"><div><h1>'+esc(settings.name)+'</h1><p style="font-size:.72rem;color:#666;margin-top:4px">'+esc(settings.address)+'</p><p style="font-size:.68rem;color:#888">GSTIN: '+esc(settings.gstin)+' | License: '+esc(settings.license)+'</p></div><div class="inv-no"><strong style="font-size:.9rem;color:#111">TAX INVOICE</strong><br>Bill No: <strong>'+esc(b.billNo)+'</strong><br>Date: '+fmtDate(b.date)+'<br>Payment: '+esc(b.payment)+'</div></div><div class="inv-info-grid"><div><h4>Billed To</h4><p><strong>'+esc(b.patient)+'</strong></p>'+(b.phone?'<p>Phone: '+esc(b.phone)+'</p>':'')+(b.doctor?'<p>Dr. '+esc(b.doctor)+'</p>':'')+'</div></div><table class="inv-tbl"><thead><tr><th>#</th><th>Medicine</th><th>Code</th><th>Qty</th><th>Rate</th><th class="tr">Amount</th><th class="tr">CGST</th><th class="tr">SGST</th><th class="tr">Total</th></tr></thead><tbody>'+b.items.map(function(it,i){return '<tr><td>'+(i+1)+'</td><td>'+esc(it.name)+'</td><td>'+esc(it.code)+'</td><td>'+it.qty+'</td><td class="tr">₹'+it.rate.toFixed(2)+'</td><td class="tr">₹'+it.amt.toFixed(2)+'</td><td class="tr">₹'+it.cgst.toFixed(2)+'</td><td class="tr">₹'+it.sgst.toFixed(2)+'</td><td class="tr"><strong>₹'+(it.amt+it.cgst+it.sgst).toFixed(2)+'</strong></td></tr>';}).join('')+'</tbody></table><div class="inv-totals"><table><tr><td>Subtotal</td><td style="text-align:right">₹'+b.sub.toFixed(2)+'</td></tr><tr><td>CGST</td><td style="text-align:right">₹'+b.tcgst.toFixed(2)+'</td></tr><tr><td>SGST</td><td style="text-align:right">₹'+b.tsgst.toFixed(2)+'</td></tr>'+(b.disc?'<tr><td>Discount</td><td style="text-align:right;color:red">-₹'+b.disc.toFixed(2)+'</td></tr>':'')+'<tr class="grand"><td>Grand Total</td><td style="text-align:right">₹'+b.grand.toFixed(2)+'</td></tr></table></div><div class="inv-foot">'+esc(settings.terms)+'<br>Thank you for visiting!</div></div>';document.getElementById('invContent').innerHTML=html;openModal('invModal');}
+function generateBill(){var pat=document.getElementById('bPatient').value.trim();if(!pat){toast('Patient name is required','e');return;}var rows=document.querySelectorAll('#billItems .bi-row:not(.hdr)');var items=[];var valid=true;rows.forEach(function(r){var sel=r.querySelector('.bmsel');var m=meds.find(function(x){return x.id===parseInt(sel.value);});if(!m){valid=false;return;}var q=parseInt(r.querySelector('.bqty').value)||0;if(q<=0||q>m.qty){valid=false;toast(m.name+': Invalid qty','w');return;}items.push({mid:m.id,name:m.name,code:m.code||'',qty:q,rate:m.sell,gst:m.gst||0,amt:q*m.sell,cgst:q*m.sell*m.gst/200,sgst:q*m.sell*m.gst/200,trade:m.trade||0});});if(!valid||!items.length){toast('Add valid items','e');return;}var sub=items.reduce(function(s,x){return s+x.amt;},0);var tcgst=items.reduce(function(s,x){return s+x.cgst;},0);var tsgst=items.reduce(function(s,x){return s+x.sgst;},0);var disc=parseFloat(document.getElementById('bDisc').value)||0;var grand=sub+tcgst+tsgst-disc;var billNo='KMS-'+String(bills.length+1).padStart(5,'0');var billDateVal = document.getElementById('bDate').value;
+var billDate = billDateVal ? new Date(billDateVal + 'T12:00:00') : new Date();
+var bill={id:Date.now(),billNo:billNo,date:billDate.toISOString(),patient:pat,doctor:document.getElementById('bDoctor').value.trim(),phone:document.getElementById('bPhone').value.trim(),payment:document.getElementById('bPay').value,items:items,sub:sub,tcgst:tcgst,tsgst:tsgst,disc:disc,grand:grand};bills.push(bill);items.forEach(function(it){var m=meds.find(function(x){return x.id===it.mid;});if(m)m.qty-=it.qty;});saveAll();showInvoice(bill);clearBill();toast('Bill generated successfully');renderDash();}
+function clearBill(){
+    document.getElementById('billItems').innerHTML='';
+    document.getElementById('bPatient').value='';
+    document.getElementById('bDoctor').value='';
+    document.getElementById('bPhone').value='';
+    document.getElementById('bDisc').value='0';
+    document.getElementById('bDate').valueAsDate = new Date();
+    billRowN=0;calcBill();
+}
+function showInvoice(b) {
+    // Build GST slab summary
+    var gstSlabs = {};
+    b.items.forEach(function(it) {
+        var g = it.gst || 0;
+        if (!gstSlabs[g]) gstSlabs[g] = { taxable: 0, cgst: 0, sgst: 0 };
+        var taxable = it.amt;
+        gstSlabs[g].taxable += taxable;
+        gstSlabs[g].cgst += it.cgst;
+        gstSlabs[g].sgst += it.sgst;
+    });
+
+    var gstSummaryRows = Object.keys(gstSlabs).sort(function(a,b){return a-b;}).map(function(g) {
+        var s = gstSlabs[g];
+        return '<tr><td>' + g + '%</td><td style="text-align:right">₹' + s.taxable.toFixed(2) + '</td><td style="text-align:right">₹' + s.cgst.toFixed(2) + '</td><td style="text-align:right">₹' + s.sgst.toFixed(2) + '</td></tr>';
+    }).join('');
+
+    var html = 
+    '<div class="inv-preview">' +
+        '<div class="inv-hdr">' +
+            '<div>' +
+                '<h1>' + esc(settings.name) + '</h1>' +
+                '<p style="font-size:.72rem;color:#555;margin-top:4px">' + esc(settings.address) + '</p>' +
+                '<p style="font-size:.68rem;color:#888">GSTIN: ' + esc(settings.gstin) + ' | Drug License: ' + esc(settings.license) + '</p>' +
+                '<p style="font-size:.68rem;color:#888">Phone: ' + esc(settings.phone) + ' | Email: ' + esc(settings.email) + '</p>' +
+            '</div>' +
+            '<div class="inv-no">' +
+                '<strong style="font-size:1rem;color:#0a3d20">TAX INVOICE</strong>' +
+                '<div style="margin-top:6px;font-size:.78rem;color:#555;line-height:1.6">' +
+                    'Bill No: <strong>' + esc(b.billNo) + '</strong><br>' +
+                    'Date: <strong>'+fmtDate(b.date, true)+'</strong><br>Payment: '+esc(b.payment)+
+                    'Payment: <strong>' + esc(b.payment) + '</strong>' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+        
+        '<div class="inv-info-grid">' +
+            '<div style="border:1px solid #e0e0e0;padding:10px;border-radius:6px">' +
+                '<h4 style="font-size:.65rem;text-transform:uppercase;color:#999;letter-spacing:1px;margin-bottom:6px">Billed To</h4>' +
+                '<p style="font-size:.85rem;color:#111;font-weight:600;margin-bottom:2px">' + esc(b.patient) + '</p>' +
+                (b.phone ? '<p style="font-size:.74rem;color:#555">Phone: ' + esc(b.phone) + '</p>' : '') +
+                (b.doctor ? '<p style="font-size:.74rem;color:#555">Dr. ' + esc(b.doctor) + '</p>' : '') +
+            '</div>' +
+            '<div style="border:1px solid #e0e0e0;padding:10px;border-radius:6px">' +
+                '<h4 style="font-size:.65rem;text-transform:uppercase;color:#999;letter-spacing:1px;margin-bottom:6px">Store Details</h4>' +
+                '<p style="font-size:.74rem;color:#555;line-height:1.5">' +
+                    '<strong>' + esc(settings.name) + '</strong><br>' +
+                    esc(settings.address) + '<br>' +
+                    'GSTIN: ' + esc(settings.gstin) +
+                '</p>' +
+            '</div>' +
+        '</div>' +
+
+        '<table class="inv-tbl">' +
+            '<thead>' +
+                '<tr>' +
+                    '<th style="width:30px">#</th>' +
+                    '<th>Medicine</th>' +
+                    '<th>HSN</th>' +
+                    '<th>Batch</th>' +
+                    '<th>Exp.</th>' +
+                    '<th style="text-align:center">Qty</th>' +
+                    '<th style="text-align:right">MRP</th>' +
+                    '<th style="text-align:right">Amount</th>' +
+                    '<th style="text-align:right">CGST</th>' +
+                    '<th style="text-align:right">SGST</th>' +
+                    '<th style="text-align:right">Total</th>' +
+                '</tr>' +
+            '</thead>' +
+            '<tbody>' +
+                b.items.map(function(it, i) {
+                    var med = meds.find(function(x) { return x.id === it.mid; });
+                    var batch = med ? med.batch : '-';
+                    var exp = med ? fmtDate(med.exp) : '-';
+                    var hsn = med ? (med.hsn || '30049099') : '30049099';
+                    return '<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td><strong style="color:#111">' + esc(it.name) + '</strong><br><span style="font-size:.65rem;color:#888">' + esc(it.code) + ' | GST ' + it.gst + '%</span></td>' +
+                        '<td>' + esc(hsn) + '</td>' +
+                        '<td>' + esc(batch) + '</td>' +
+                        '<td>' + esc(exp) + '</td>' +
+                        '<td style="text-align:center">' + it.qty + '</td>' +
+                        '<td style="text-align:right">₹' + it.rate.toFixed(2) + '</td>' +
+                        '<td style="text-align:right">₹' + it.amt.toFixed(2) + '</td>' +
+                        '<td style="text-align:right">₹' + it.cgst.toFixed(2) + '</td>' +
+                        '<td style="text-align:right">₹' + it.sgst.toFixed(2) + '</td>' +
+                        '<td style="text-align:right"><strong>₹' + (it.amt + it.cgst + it.sgst).toFixed(2) + '</strong></td>' +
+                    '</tr>';
+                }).join('') +
+            '</tbody>' +
+        '</table>' +
+
+        '<div style="display:flex;gap:1.5rem;justify-content:space-between;align-items:flex-start;margin-top:1rem;flex-wrap:wrap">' +
+            '<div style="flex:1;min-width:280px">' +
+                '<h4 style="font-size:.7rem;text-transform:uppercase;color:#0a3d20;letter-spacing:.5px;margin-bottom:6px;border-bottom:1px solid #0a3d20;padding-bottom:4px">GST Summary</h4>' +
+                '<table style="width:100%;font-size:.72rem;border-collapse:collapse">' +
+                    '<thead>' +
+                        '<tr style="background:#f0faf4">' +
+                            '<th style="text-align:left;padding:5px 8px;border-bottom:1px solid #0a3d20">GST %</th>' +
+                            '<th style="text-align:right;padding:5px 8px;border-bottom:1px solid #0a3d20">Taxable</th>' +
+                            '<th style="text-align:right;padding:5px 8px;border-bottom:1px solid #0a3d20">CGST</th>' +
+                            '<th style="text-align:right;padding:5px 8px;border-bottom:1px solid #0a3d20">SGST</th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>' + gstSummaryRows + '</tbody>' +
+                '</table>' +
+                '<div style="margin-top:1rem;font-size:.72rem;color:#666;line-height:1.6">' +
+                    '<strong>Terms & Conditions:</strong><br>' + esc(settings.terms) +
+                '</div>' +
+            '</div>' +
+            
+            '<div style="min-width:240px">' +
+                '<table style="width:100%;font-size:.85rem">' +
+                    '<tr><td style="padding:4px 0;color:#555">Subtotal</td><td style="text-align:right;padding:4px 0">₹' + b.sub.toFixed(2) + '</td></tr>' +
+                    '<tr><td style="padding:4px 0;color:#555">Total CGST</td><td style="text-align:right;padding:4px 0">₹' + b.tcgst.toFixed(2) + '</td></tr>' +
+                    '<tr><td style="padding:4px 0;color:#555">Total SGST</td><td style="text-align:right;padding:4px 0">₹' + b.tsgst.toFixed(2) + '</td></tr>' +
+                    (b.disc ? '<tr><td style="padding:4px 0;color:#d32f2f">Discount</td><td style="text-align:right;padding:4px 0;color:#d32f2f">-₹' + b.disc.toFixed(2) + '</td></tr>' : '') +
+                    '<tr style="border-top:2px solid #0a3d20">' +
+                        '<td style="padding:8px 0;font-size:1rem;font-weight:700;color:#0a3d20">Grand Total</td>' +
+                        '<td style="padding:8px 0;font-size:1.1rem;font-weight:700;color:#0a3d20;text-align:right">₹' + b.grand.toFixed(2) + '</td>' +
+                    '</tr>' +
+                    '<tr><td colspan="2" style="font-size:.75rem;color:#888;text-align:right;padding-top:4px">(Incl. of all taxes)</td></tr>' +
+                '</table>' +
+                '<div style="margin-top:2rem;text-align:right">' +
+                    '<div style="border-top:1px solid #ccc;display:inline-block;padding-top:8px;min-width:140px;text-align:center">' +
+                        '<p style="font-size:.75rem;color:#555">Authorized Signatory</p>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+
+        '<div class="inv-foot" style="margin-top:1.5rem">' +
+            '<p style="font-size:.75rem;color:#0a3d20;font-weight:600">Thank you for your visit. Get well soon!</p>' +
+            '<p style="font-size:.65rem;color:#999;margin-top:4px">This is a computer generated invoice and does not require signature.</p>' +
+        '</div>' +
+    '</div>';
+    
+    document.getElementById('invContent').innerHTML = html;
+    openModal('invModal');
+}
 function printInv(){window.print();}
 
 /* BILL HISTORY */
